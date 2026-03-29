@@ -6,12 +6,12 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Round extends World
+public class Round
 {
-    Enemy[] enemies;
-    int medals;
-    int enemyCount;
-    int roundCount;
+    private Enemy[] enemies;
+    private int medals;
+    private int enemyCount;
+    private int roundCount;
     /**
      * Constructor for objects of class Round.
      * 
@@ -19,6 +19,6 @@ public class Round extends World
     public Round()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+        // super(600, 400, 1); 
     }
 }

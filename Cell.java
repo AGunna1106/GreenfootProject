@@ -6,17 +6,39 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Cell extends World
+public class Cell extends Actor
 {
-    boolean isValid;
-    boolean isPath;
+    private boolean isValid;
+    private boolean isPath;
     /**
      * Constructor for objects of class Cell.
      * 
      */
     public Cell()
     {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+        getImage().scale(42, 42);
+    }
+    
+    public Cell(Color color) {
+        getImage().scale(42, 42);
+        getImage().setColor(color);
+        getImage().fill();
+        setImage(getImage());
+    }
+    
+    public void setIsValid(boolean isvalid) {
+        isValid = isvalid;
+    }
+    
+    public boolean getIsValid() {
+        return isValid;
+    }
+    
+    public void setIsPath(boolean ispath) {
+        isPath = ispath;
+    }
+    
+    public boolean getIsPath() {
+        return isPath;
     }
 }

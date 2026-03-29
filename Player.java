@@ -6,13 +6,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Player extends Actor
+public class Player
 {
-    int medals;
-    int health;
-    int round;
-    String username;
-    String password;
+    private int medals;
+    private int health;
+    private int round;
+    private String username;
+    private String password;
     /**
      * Act - do whatever the Player wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -20,5 +20,8 @@ public class Player extends Actor
     public void act()
     {
         // Add your action code here.
+    }
+    
+    public Player() {
     }
 }

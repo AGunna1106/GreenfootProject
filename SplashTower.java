@@ -8,7 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class SplashTower extends Tower
 {
-    int targetMultiplier;
+    private int targetMultiplier;
     /**
      * Constructor for objects of class SplashTower.
      * 

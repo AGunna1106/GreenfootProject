@@ -6,17 +6,16 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Difficulty extends World
+public class Difficulty extends Actor
 {
-    int multiplierScale;
-    String selection;
+    private int multiplierScale;
+    private String selection;
     /**
      * Constructor for objects of class Difficulty.
      * 
      */
     public Difficulty()
     {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+
     }
 }
