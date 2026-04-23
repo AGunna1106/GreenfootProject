@@ -15,5 +15,6 @@ public class LongRangeTower extends Tower
      */
     public LongRangeTower()
     {
+        super();
     }
 }

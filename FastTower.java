@@ -15,5 +15,6 @@ public class FastTower extends Tower
      */
     public FastTower()
     {
+        super();
     }
 }

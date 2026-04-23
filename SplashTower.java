@@ -15,5 +15,6 @@ public class SplashTower extends Tower
      */
     public SplashTower()
     {
+        super();
     }
 }
