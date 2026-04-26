@@ -22,6 +22,16 @@ public class Player
         // Add your action code here.
     }
     
-    public Player() {
+    public Player(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

@@ -1,7 +1,11 @@
 #BlueJ class context
 comment0.target=Manager
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ PlayerManager\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=
 comment1.target=Manager()
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ PlayerManager.\r\n\ \r\n
-numComments=2
+comment2.params=player
+comment2.target=void\ savePlayer(Player)
+comment3.params=un\ pass
+comment3.target=Player\ getPlayer(java.lang.String,\ java.lang.String)
+comment4.params=
+comment4.target=Player[]\ getAllPlayers()
+numComments=5
