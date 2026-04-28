@@ -15,6 +15,12 @@ public class FastTower extends Tower
      */
     public FastTower()
     {
-        super();
+        super(120, 60, 1);
+    }
+    
+    protected void shoot(Enemy target)
+    {
+        Projectile p = new Projectile(target, damage);
+        getWorld().addObject(p, getX(), getY());
     }
 }

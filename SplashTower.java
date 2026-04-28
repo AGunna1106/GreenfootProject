@@ -15,6 +15,12 @@ public class SplashTower extends Tower
      */
     public SplashTower()
     {
-        super();
+        super(120, 90, 1);
+    }
+    
+    protected void shoot(Enemy target)
+    {
+        Projectile p = new Projectile(target, damage);
+        getWorld().addObject(p, getX(), getY());
     }
 }
