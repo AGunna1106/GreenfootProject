@@ -49,3 +49,4 @@ public class Manager
     public Player[] getAllPlayers() {
         return players.values().toArray(new Player[0]);
     }
+} 
