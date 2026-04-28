@@ -1,8 +1,8 @@
 /**
- * Write a description of class Manager here.
+ * Handles player data storage and retrieval.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Houlaymatou Diallo
+ * @version UC 3.2 4/28/26
  */
 import java.io.*;
 import java.util.HashMap;
@@ -52,5 +52,19 @@ public class Manager
     
     public Player[] getAllPlayers() {
         return players.values().toArray(new Player[0]);
+    }
+
+    // getPlayerResults added UC 3.2
+    public String getPlayerResults(String username) 
+    {
+        Player p = players.get(username); 
+        if (p == null){
+            return "No past results found"; 
+        } 
+
+        return "Player: " + p.getUsername()
+                + "\n Highest Round: " + p.getRound()
+                + "\nMedals: " + p.getMedals()
+                + "\nHealth: " + p.getHealth(); 
     }
 }
