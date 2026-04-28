@@ -15,6 +15,13 @@ public class LongRangeTower extends Tower
      */
     public LongRangeTower()
     {
-        super();
+        super(240, 120, 2);
+    }
+    
+    protected void shoot(Enemy target)
+    {
+        Projectile p = new Projectile(target, damage);
+        p.setSpeed(10);
+        getWorld().addObject(p, getX(), getY());
     }
 }
