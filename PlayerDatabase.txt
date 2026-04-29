@@ -1,3 +1,4 @@
-hi,hi
-k,k,5;Easy;100;2|10;Medium;80;3|8;Hard;60;4
-ok,ok,5;Easy;100;2|10;Medium;80;3|8;Hard;60;4|5;Easy;100;2|10;Medium;80;3|8;Hard;60;4
+hello,hello
+ok,ok
+okk,ok
+meep,meep

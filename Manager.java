@@ -1,8 +1,4 @@
 /**
- * Write a description of class Manager here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
  */
 import java.io.*;
 import java.util.HashMap;
@@ -73,4 +69,4 @@ public class Manager
     public Player[] getAllPlayers() {
         return players.values().toArray(new Player[0]);
     }
-}
+} 
