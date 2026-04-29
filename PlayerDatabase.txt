@@ -1,5 +1,9 @@
-hello,hello
-ok,ok
-okk,ok
-meep,meep
-123,123
+meep,meep,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
+hi,okok,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
+123,123,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
+okokok,o,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
+hello,hello,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
+ok,ok,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
+he,he,5;Easy;100;2
+okk,ok,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
+o,o,5;Easy;100;2|5;Easy;100;2

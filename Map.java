@@ -21,7 +21,7 @@ public class Map
         cells = new Cell[mapLength][mapLength];
     }
     
-    public void addCells(int mapType) {
+    public Cell[][] addCells(int mapType) {
         int[][] map = mapSelection(mapType); //select map 0 or 1
         for(int i = 0; i < cells.length; i++) {
             for(int j = 0; j < cells[i].length; j++) {
@@ -38,6 +38,7 @@ public class Map
                 }
             }
         }
+        return cells;
     }
     
     public int[][] mapSelection(int mapType) {
@@ -67,12 +68,12 @@ public class Map
                              {0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}}};
         return mapType == 0 ? maps[0] : maps[1];
     }
-    
+    /*
     public void displayMap() {
         for(int i = 0; i < cells.length; i++) {
             for(int j = 0; j < cells[i].length; j++) {
                 world.addObject(cells[j][i], 42 * i + 21, 42 * j + 21);
             }
         }
-    }
+    }*/
 }

@@ -12,6 +12,7 @@ public class GUI extends World
     private boolean loggedIn      = false;
     private boolean waitingToSwitch = false;
     private boolean choosingMap   = false;
+    private int delayCounter = 0;
     private int     mapType       = 0;
 
     public GUI()
@@ -22,25 +23,25 @@ public class GUI extends World
 
     public void act()
     {
-        if (!loginStarted)
-        {
+        delayCounter++;
+        if (!loginStarted) {
             loginStarted = true;
             login();
             return;
         }
 
-        if (waitingToSwitch)
-        {
+        if (waitingToSwitch && delayCounter > 120) {
             waitingToSwitch = false;
             loggedIn = true;
             drawMenu();
             return;
         }
 
-        if (loggedIn && Greenfoot.mouseClicked(null))
-        {
+        if (loggedIn && Greenfoot.mouseClicked(null)) {
             MouseInfo mouse = Greenfoot.getMouseInfo();
-            if (mouse != null) handleMenuClick(mouse.getX(), mouse.getY());
+            if (mouse != null) {
+                handleMenuClick(mouse.getX(), mouse.getY());
+            }
         }
     }
 
@@ -53,7 +54,8 @@ public class GUI extends World
         String pass = Greenfoot.ask("Enter Password:");
         String result = gameController.verifyPlayer(un, pass);
         showText(result, 273, 250);
-
+        
+        delayCounter = 0;
         if (result.equals("Login successful!"))
             waitingToSwitch = true;
         else
@@ -65,8 +67,10 @@ public class GUI extends World
     // ----------------------------------------------------------------
     private void drawMenu()
     {
+        getBackground().clear();
+
         GreenfootImage bg = new GreenfootImage(getWidth(), getHeight());
-        bg.setColor(new Color(20, 20, 40));
+        bg.setColor(new Color(0, 0, 0));
         bg.fill();
         setBackground(bg);
 
@@ -83,7 +87,7 @@ public class GUI extends World
     {
         if (isWithin(x, y, 200))
         {
-            gameController.initializeGame(mapType);
+            startGame(mapType);
         }
         else if (isWithin(x, y, 250))
         {
@@ -128,5 +132,22 @@ public class GUI extends World
     {
         showText("", getWidth() / 2, 470);
         showText(msg, getWidth() / 2, 470);
+    }
+    
+    public void startGame(int mapType) {
+        loggedIn = false;
+        Cell[][] cells = gameController.initializeGame(mapType);
+        showText("", getWidth()/2, 100);
+        showText("", getWidth()/2, 200);
+        showText("", getWidth()/2, 250);
+        showText("", getWidth()/2, 300);
+        showText("", getWidth()/2, 350);
+        showText("", getWidth()/2, 400);
+        showText("", getWidth()/2, 470);
+        for(int i = 0; i < cells.length; i++) {
+            for(int j = 0; j < cells[i].length; j++) {
+                addObject(cells[j][i], 42 * i + 21, 42 * j + 21);
+            }
+        }
     }
 }

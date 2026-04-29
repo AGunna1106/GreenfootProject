@@ -6,8 +6,9 @@ import greenfoot.*;
  */
 public class GameController
 {
+    private Player player;
     private Manager manager;
-    private Player  currentPlayer;
+    private Game game;
 
     public GameController()
     {
@@ -30,21 +31,22 @@ public class GameController
         {
             return "Incorrect password. Try again.";
         }
-        currentPlayer = p;
+        player = p;
         return "Login successful!";
     }
 
     /**
      * Switches Greenfoot to a new Game world for the given map type.
      */
-    public void initializeGame(int mapType)
+    public Cell[][] initializeGame(int mapType)
     {
-        if (currentPlayer == null)
-        {
-            currentPlayer = new Player("Guest", "guest");
-        }
-        Greenfoot.setWorld(new Game(mapType, currentPlayer));
+        player.setMedals(200);
+        player.setHealth(100);
+        game = new Game(player);
+        //Don't switch worlds, pass it back to gui and let it display
+        //Greenfoot.setWorld(game);
+        return(game.setMap(mapType));
     }
 
-    public Player getCurrentPlayer() { return currentPlayer; }
+    public Player getCurrentPlayer() { return player; }
 }

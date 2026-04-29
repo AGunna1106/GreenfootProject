@@ -57,16 +57,17 @@ public class Game extends World
     // ----------------------------------------------------------------
     // Constructor
     // ----------------------------------------------------------------
-    public Game(int mapType, Player player)
+    public Game(Player player)
     {
         super(WORLD_W, WORLD_H, 1);
         this.player = player;
 
         map = new Map(this);
-        map.addCells(mapType);
-        map.displayMap();
-
+    }
+    
+    public Cell[][] setMap(int mapType) {
         drawSidePanel();
+        return map.addCells(mapType);
     }
 
     // ----------------------------------------------------------------
@@ -227,7 +228,7 @@ public class Game extends World
     private void restartGame()
     {
         Player fresh = new Player(player.getUsername(), player.getPassword());
-        Greenfoot.setWorld(new Game(mapType, fresh));
+        Greenfoot.setWorld(new Game(fresh));
     }
 
     // ----------------------------------------------------------------
