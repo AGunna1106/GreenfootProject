@@ -14,4 +14,6 @@ comment6.params=x\ y\ optionY
 comment6.target=boolean\ isWithin(int,\ int,\ int)
 comment7.params=msg
 comment7.target=void\ showMessage(java.lang.String)
-numComments=8
+comment8.params=mapType
+comment8.target=void\ startGame(int)
+numComments=9
