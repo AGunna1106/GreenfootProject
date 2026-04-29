@@ -9,7 +9,9 @@ import greenfoot.*;
 public class GameController  
 {
     private Player player;
-    private Manager manager;
+    private Manager manager = new Manager();
+    private Game game;
+    
     public GameController()
     {
     }
@@ -21,20 +23,21 @@ public class GameController
      * @return     the sum of x and y 
      */
     
-    public String verifyPlayer(String un, String pass) 
+    public boolean verifyPlayer(String un, String pass) 
     {
-        manager = new Manager();
         player = manager.getPlayer(un, pass);
         if (player == null) {
-            return "Wrong password. Try again.";
+            return false;
         }
-        return "Login successful!";
+        return true;
     }
     
-    public boolean initializeGame(int mapType)
+    public Cell[][] initializeGame(int mapType)
     {
-        //initializeStats();
-        Greenfoot.setWorld(new Game(mapType));
-        return true;
+        player.setMedals(0);
+        player.setHealth(100);
+        game = new Game(player);
+        return(game.setMap(mapType));
+        //Greenfoot.setWorld(game);
     }
 }
