@@ -17,10 +17,11 @@ public class Map
     public Map(World world)
     {    
         this.world = world;
-        cells = new Cell[12][12];
+        int mapLength = 12;
+        cells = new Cell[mapLength][mapLength];
     }
     
-    public Cell[][] addCells(int mapType) {
+    public void addCells(int mapType) {
         int[][] map = mapSelection(mapType); //select map 0 or 1
         for(int i = 0; i < cells.length; i++) {
             for(int j = 0; j < cells[i].length; j++) {
@@ -37,7 +38,6 @@ public class Map
                 }
             }
         }
-        return cells;
     }
     
     public int[][] mapSelection(int mapType) {

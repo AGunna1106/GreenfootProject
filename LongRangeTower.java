@@ -1,23 +1,28 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 /**
- * Write a description of class LongRangeTower here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * LongRangeTower – fires slow but hits far and hard.
+ * Base cost: 50 medals  |  Cheapest tier.
+ *
+ * upgrade[level] = { upgradeCost, damage, range, fireRate }
+ *   Level 0 (base)   : buy cost 50,  dmg 2, range 240, fireRate 120
+ *   Level 1 (Upgrade): cost 60,      dmg 4, range 280, fireRate 100
+ *   Level 2 (Max)    : cost 120,     dmg 6, range 320, fireRate  80
  */
 public class LongRangeTower extends Tower
 {
-    private int rangeMultiplier;
-    /**
-     * Constructor for objects of class LongRangeTower.
-     * 
-     */
     public LongRangeTower()
     {
-        super(240, 120, 2);
+        super(240, 120, 2, 50);
+        name = "Long Range Tower";
+
+        upgrade = new int[][] {
+            {  50, 2, 240, 120 },  // Level 0 – base
+            {  60, 4, 280, 100 },  // Level 1
+            { 120, 6, 320,  80 }   // Level 2 – max
+        };
     }
-    
+
     protected void shoot(Enemy target)
     {
         Projectile p = new Projectile(target, damage);

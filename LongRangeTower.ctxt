@@ -1,9 +1,8 @@
 #BlueJ class context
 comment0.target=LongRangeTower
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ LongRangeTower\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ LongRangeTower\ \u2013\ fires\ slow\ but\ hits\ far\ and\ hard.\r\n\ Base\ cost\:\ 50\ medals\ \ |\ \ Cheapest\ tier.\r\n\r\n\ upgrade[level]\ \=\ {\ upgradeCost,\ damage,\ range,\ fireRate\ }\r\n\ \ \ Level\ 0\ (base)\ \ \ \:\ buy\ cost\ 50,\ \ dmg\ 2,\ range\ 240,\ fireRate\ 120\r\n\ \ \ Level\ 1\ (Upgrade)\:\ cost\ 60,\ \ \ \ \ \ dmg\ 4,\ range\ 280,\ fireRate\ 100\r\n\ \ \ Level\ 2\ (Max)\ \ \ \ \:\ cost\ 120,\ \ \ \ \ dmg\ 6,\ range\ 320,\ fireRate\ \ 80\r\n
 comment1.params=
 comment1.target=LongRangeTower()
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ LongRangeTower.\r\n\ \r\n
 comment2.params=target
 comment2.target=void\ shoot(Enemy)
 numComments=3

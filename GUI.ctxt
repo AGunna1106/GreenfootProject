@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=GUI
+comment0.text=\r\n\ GUI\ \u2013\ the\ login\ /\ main-menu\ world.\r\n\ After\ login,\ forwards\ to\ GameController\ which\ creates\ the\ Game\ world.\r\n
 comment1.params=
 comment1.target=GUI()
 comment2.params=

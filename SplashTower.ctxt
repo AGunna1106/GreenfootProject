@@ -1,9 +1,9 @@
 #BlueJ class context
 comment0.target=SplashTower
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ SplashTower\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ SplashTower\ \u2013\ damages\ all\ enemies\ in\ range\ on\ each\ shot.\r\n\ Base\ cost\:\ 125\ medals\ \ |\ \ Most\ expensive\ tier.\r\n\r\n\ upgrade[level]\ \=\ {\ upgradeCost,\ damage,\ range,\ fireRate\ }\r\n\ \ \ Level\ 0\ (base)\ \ \ \:\ buy\ cost\ 125,\ dmg\ 1,\ range\ 120,\ fireRate\ 90\r\n\ \ \ Level\ 1\ (Upgrade)\:\ cost\ \ 75,\ \ \ \ \ dmg\ 2,\ range\ 140,\ fireRate\ 75\r\n\ \ \ Level\ 2\ (Max)\ \ \ \ \:\ cost\ 150,\ \ \ \ \ dmg\ 4,\ range\ 160,\ fireRate\ 60\r\n
 comment1.params=
 comment1.target=SplashTower()
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ SplashTower.\r\n\ \r\n
 comment2.params=target
 comment2.target=void\ shoot(Enemy)
+comment2.text=\r\n\ Splash\:\ damages\ every\ enemy\ within\ range,\ not\ just\ the\ primary\ target.\r\n
 numComments=3
