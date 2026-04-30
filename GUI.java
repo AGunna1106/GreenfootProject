@@ -1,46 +1,17 @@
-    import greenfoot.*;
+import greenfoot.*;
 
 /**
- * GUI – login and main-menu world (World 1 of 2).
- *
- * GRASP Roles (iter2.md):
- *   GUI (View/Boundary) : only displays state and forwards input — never contains logic
- *   Indirection         : sits between player input and game logic;
- *                         routes every action to GameController or Game
- *   Low Coupling        : GUI knows Game's public interface only; no domain logic here
- *
- * Two phases:
- *   Login / Menu  – GUI is the active Greenfoot world (act() runs)
- *   In-game       – Game is the active world; GUI is a rendering service
- *                   (Game calls gui.refreshPanel / gui.handlePanelClick)
- *
- * UC1  Login        – login() collects credentials, delegates to GameController
- * UC2  Start Game   – startGame() asks GameController to init, sets Game as world
- * UC3  Leaderboard  – menu stub
- * UC5  Help         – panel button routes to game.toggleHelp()
- * UC6  Place Tower  – panel buttons route to game.startPlacement()
- * UC7  Upgrade      – panel button routes to game.handleUpgrade()
- * UC8  Difficulty   – menu stub
- * UC9  Pause/Resume – panel buttons route to game.doPause() / game.doResume()
+ * GUI – login and main-menu world
  */
 public class GUI extends World
 {
-    // ----------------------------------------------------------------
-    // Layout constants — hardcoded here to avoid circular static
-    // initialisation with Game (both extend World; Greenfoot is sensitive
-    // to cross-class static field references at compile time).
-    // These values must match Game's constants exactly.
-    // ----------------------------------------------------------------
-    public static final int MAP_W   = 504;
+    // Layout constants 
+    public static final int MAP_W   = 546;
     public static final int PANEL_W = 156;
     public static final int WORLD_W = 660;
     public static final int WORLD_H = 504;
     public static final int PANEL_X = 504;
 
-    // ----------------------------------------------------------------
-    // In-game panel layout (button Y-centres and dimensions)
-    // All layout decisions live in GUI — Game has zero display code.
-    // ----------------------------------------------------------------
     static final int BTN_FAST_Y         =  95;
     static final int BTN_LONG_Y         = 135;
     static final int BTN_SPLASH_Y       = 175;
@@ -53,41 +24,26 @@ public class GUI extends World
     static final int BTN_W = PANEL_W - 8;   // 148
     static final int BTN_H = 28;
 
-    // ----------------------------------------------------------------
     // Login / menu state
-    // ----------------------------------------------------------------
-    private GameController gameController;
     private boolean loginStarted    = false;
     private boolean loggedIn        = false;
     private boolean waitingToSwitch = false;
     private boolean choosingMap     = false;
     private int     delayCounter    = 0;
     private int     mapType         = 0;
+    private GameController gameController;
 
-    // ----------------------------------------------------------------
     // Constructor
-    // ----------------------------------------------------------------
     public GUI()
     {
         super(WORLD_W, WORLD_H, 1);
         gameController = new GameController(this);
 
-        // Set a visible background immediately so Greenfoot doesn't show
-        // a blank white canvas while waiting for the first act() call.
-        GreenfootImage bg = new GreenfootImage(WORLD_W, WORLD_H);
-        bg.setColor(new Color(0, 0, 0));
-        bg.fill();
-        setBackground(bg);
-        showText("Loading... press Run to start", WORLD_W / 2, WORLD_H / 2);
     }
 
-    // ----------------------------------------------------------------
-    // act() — login / menu phase only; no game logic here
-    // ----------------------------------------------------------------
     public void act()
     {
         delayCounter++;
-
         if (!loginStarted)
         {
             loginStarted = true;
@@ -110,19 +66,13 @@ public class GUI extends World
         }
     }
 
-    // ================================================================
-    // UC1 — Login
-    // GUI collects input; GameController (Indirection) delegates to Manager
-    // ================================================================
+    // Login
     public void login()
     {
         String un   = Greenfoot.ask("Enter Username:");
         String pass = Greenfoot.ask("Enter Password:");
         String result = gameController.verifyPlayer(un, pass);
-
-        // Clear the "Loading..." hint before showing the result
-        showText("", WORLD_W / 2, WORLD_H / 2);
-        showText(result, getWidth() / 2, 250);
+        showText(result, 273, 250);
 
         delayCounter = 0;
         if (result.equals("Login successful!"))
@@ -131,11 +81,12 @@ public class GUI extends World
             loginStarted = false;
     }
 
-    // ================================================================
-    // Menu display
-    // ================================================================
+    // Menu drawing
     private void drawMenu()
     {
+        showText("", 273, 250);                    // clear "Login successful!" overlay
+        showText("", getWidth() / 2, WORLD_H / 2); // clear "Loading..." overlay
+        getBackground().clear();
         GreenfootImage bg = new GreenfootImage(getWidth(), getHeight());
         bg.setColor(new Color(0, 0, 0));
         bg.fill();
@@ -176,8 +127,8 @@ public class GUI extends World
         else if (choosingMap && y > 455 && y < 485)
         {
             int half = getWidth() / 2;
-            if      (x > half - 60 && x < half)      { mapType = 0; showMessage("Map 1 selected"); choosingMap = false; }
-            else if (x > half      && x < half + 60) { mapType = 1; showMessage("Map 2 selected"); choosingMap = false; }
+            if      (x > half - 60 && x < half + 50) { mapType = 0; showMessage("Map 1 selected"); choosingMap = false; }
+            else if (x > half + 50 && x < half + 120) { mapType = 1; showMessage("Map 2 selected"); choosingMap = false; }
         }
     }
 
@@ -192,29 +143,19 @@ public class GUI extends World
         showText(msg, getWidth() / 2, 470);
     }
 
-    // ================================================================
-    // UC2 Step 2 — Start Game
-    // GUI delegates initialisation to GameController (Controller pattern),
-    // then switches the active world to Game.
-    // ================================================================
     public void startGame(int mapType)
     {
-        for (int yy : new int[]{100, 200, 250, 300, 350, 400, 470})
-            showText("", getWidth() / 2, yy);
-
+        loggedIn = false;
+        showText("", getWidth()/2, 100);
+        showText("", getWidth()/2, 200);
+        showText("", getWidth()/2, 250);
+        showText("", getWidth()/2, 300);
+        showText("", getWidth()/2, 350);
+        showText("", getWidth()/2, 400);
+        showText("", getWidth()/2, 470);
         gameController.initializeGame(mapType);
-        Game game = gameController.getGame();
-
-        Greenfoot.setWorld(game);
-        refreshPanel(game);
     }
 
-    // ================================================================
-    // UC4 — prepareForReturn()
-    // Called by Game.restartGame() before Greenfoot.setWorld(gui).
-    // Clears stale GUI text and resets login state so act() triggers
-    // a fresh login dialog on the very next frame.
-    // ================================================================
     public void prepareForReturn()
     {
         int cx = getWidth() / 2;
@@ -236,15 +177,6 @@ public class GUI extends World
         showText("Loading... press Run to start", cx, WORLD_H / 2);
     }
 
-    // ================================================================
-    // In-game panel rendering — GUI owns ALL layout decisions.
-    // Game passes itself; GUI reads state via public getters only.
-    // ================================================================
-
-    /**
-     * Redraws the right-hand side panel onto Game's background image.
-     * Called by Game whenever state changes (pause, placement, upgrade…).
-     */
     public void refreshPanel(Game game)
     {
         GreenfootImage bg = game.getBackground();
@@ -338,12 +270,6 @@ public class GUI extends World
         drawBtn(bg, " RESTART GAME",  BTN_RESTART_GAME_Y, false,             new Color(160, 40, 40));
     }
 
-    // ================================================================
-    // UC9 / UC5 / UC4 / UC6 / UC7 — In-game panel input routing
-    // GUI receives the click, identifies which action it maps to,
-    // then calls the appropriate method on Game.
-    // GRASP Indirection: Player clicks -> GUI -> Game executes logic
-    // ================================================================
     public void handlePanelClick(int y, Game game)
     {
         if (game.isPaused())
