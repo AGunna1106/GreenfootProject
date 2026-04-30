@@ -38,11 +38,12 @@ public abstract class Tower extends Actor
     public void act()
     {
         if (!placed) return;
-        
+
         Enemy target = findTarget();
 
         if (target != null)
         {
+            turnTowards(target.getX(), target.getY());
             attack(target);
         }
 
@@ -133,5 +134,16 @@ public abstract class Tower extends Actor
         else
             info += "MAX LEVEL";
         return info;
+    }
+
+    /**
+     * Directly sets the tower to a specific upgrade level without spending medals.
+     * Used by Round to recreate snapshot towers on restart-round.
+     */
+    public void applyUpgradeLevelDirectly(int level)
+    {
+        if (level < 0 || level >= upgrade.length) return;
+        upgradeLevel = level;
+        applyUpgradeStats();
     }
 }

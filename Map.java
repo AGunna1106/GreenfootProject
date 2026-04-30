@@ -1,79 +1,82 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 /**
- * Write a description of class MyWorld here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Map – builds the cell grid for a given map type.
+ * Does not add actors to any world; GUI.startGame() handles that.
+ *
+ * Cell array layout: cells[row][col]
+ *   addObject(cells[row][col], col*SZ+half, row*SZ+half)
  */
 public class Map
 {
-    private Cell[][] cells;
-    private World world;
-    /**
-     * Constructor for objects of class MyWorld.
-     * 
-     */
+    private Cell[][] cells;   // [row][col]
+
     public Map(World world)
-    {    
-        this.world = world;
-        int mapLength = 12;
-        cells = new Cell[mapLength][mapLength];
+    {
+        // World parameter kept for API compatibility; not used.
+        cells = new Cell[12][12];
     }
-    
-    public Cell[][] addCells(int mapType) {
-        int[][] map = mapSelection(mapType); //select map 0 or 1
-        for(int i = 0; i < cells.length; i++) {
-            for(int j = 0; j < cells[i].length; j++) {
-                if(map[j][i] == 0) { //enemy path
-                    cells[j][i] = new Cell(new Color(160, 140, 100));
-                    cells[j][i].setIsValid(false);
-                    cells[j][i].setIsPath(true);
-                } else if(map[j][i] == 1) { //water
-                    cells[j][i] = new Cell(new Color(100, 140, 180));
-                    cells[j][i].setIsValid(false);
-                } else if(map[j][i] == 2) { //land
-                    cells[j][i] = new Cell(new Color(120, 170, 120));
-                    cells[j][i].setIsValid(true);
+
+    public Cell[][] addCells(int mapType)
+    {
+        int[][] map = mapSelection(mapType);
+        // map[row][col]
+        for (int row = 0; row < cells.length; row++)
+        {
+            for (int col = 0; col < cells[row].length; col++)
+            {
+                int v = map[row][col];
+                if (v == 0)      // enemy path
+                {
+                    cells[row][col] = new Cell(new Color(160, 140, 100));
+                    cells[row][col].setIsValid(false);
+                    cells[row][col].setIsPath(true);
+                }
+                else if (v == 1) // water
+                {
+                    cells[row][col] = new Cell(new Color(100, 140, 180));
+                    cells[row][col].setIsValid(false);
+                }
+                else             // land (v==2)
+                {
+                    cells[row][col] = new Cell(new Color(120, 170, 120));
+                    cells[row][col].setIsValid(true);
                 }
             }
         }
         return cells;
     }
-    
-    public int[][] mapSelection(int mapType) {
-        int[][][] maps =   {{{1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1},
-                             {1, 1, 0, 0, 0, 2, 0, 0, 0, 2, 1, 1},
-                             {2, 2, 0, 1, 0, 2, 0, 2, 0, 2, 1, 1},
-                             {2, 2, 0, 1, 0, 2, 0, 2, 0, 2, 1, 1},
-                             {2, 2, 0, 1, 0, 2, 0, 2, 0, 2, 2, 2},
-                             {1, 1, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1},
-                             {2, 2, 0, 2, 0, 2, 0, 2, 0, 1, 0, 0},
-                             {2, 2, 0, 2, 0, 2, 0, 2, 0, 1, 0, 2},
-                             {2, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                             {0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2},
-                             {2, 2, 2, 2, 0, 2, 0, 2, 0, 0, 0, 1},
-                             {2, 2, 2, 2, 0, 0, 0, 1, 2, 2, 2, 1}},
-                            {{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                             {1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},
-                             {2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0},
-                             {2, 0, 2, 0, 2, 2, 2, 2, 2, 0, 2, 0},
-                             {2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 2, 0},
-                             {2, 0, 2, 0, 2, 0, 1, 0, 2, 0, 2, 0},
-                             {2, 0, 2, 0, 2, 0, 1, 0, 2, 0, 2, 0},
-                             {2, 0, 2, 0, 2, 0, 2, 2, 2, 0, 2, 0},
-                             {2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0},
-                             {2, 0, 2, 0, 2, 2, 2, 2, 2, 2, 2, 0},
-                             {2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                             {0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}}};
+
+    public int[][] mapSelection(int mapType)
+    {
+        int[][][] maps = {
+            // Map 0 — rows top→bottom, cols left→right
+            {{1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1},
+             {1, 1, 0, 0, 0, 2, 0, 0, 0, 2, 1, 1},
+             {2, 2, 0, 1, 0, 2, 0, 2, 0, 2, 1, 1},
+             {2, 2, 0, 1, 0, 2, 0, 2, 0, 2, 1, 1},
+             {2, 2, 0, 1, 0, 2, 0, 2, 0, 2, 2, 2},
+             {1, 1, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1},
+             {2, 2, 0, 2, 0, 2, 0, 2, 0, 1, 0, 0},
+             {2, 2, 0, 2, 0, 2, 0, 2, 0, 1, 0, 2},
+             {2, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2},
+             {0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2},
+             {2, 2, 2, 2, 0, 2, 0, 2, 0, 0, 0, 1},
+             {2, 2, 2, 2, 0, 0, 0, 1, 2, 2, 2, 1}},
+            // Map 1
+            {{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+             {1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},
+             {2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0},
+             {2, 0, 2, 0, 2, 2, 2, 2, 2, 0, 2, 0},
+             {2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 2, 0},
+             {2, 0, 2, 0, 2, 0, 1, 0, 2, 0, 2, 0},
+             {2, 0, 2, 0, 2, 0, 1, 0, 2, 0, 2, 0},
+             {2, 0, 2, 0, 2, 0, 2, 2, 2, 0, 2, 0},
+             {2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0},
+             {2, 0, 2, 0, 2, 2, 2, 2, 2, 2, 2, 0},
+             {2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+             {0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}}
+        };
         return mapType == 0 ? maps[0] : maps[1];
     }
-    /*
-    public void displayMap() {
-        for(int i = 0; i < cells.length; i++) {
-            for(int j = 0; j < cells[i].length; j++) {
-                world.addObject(cells[j][i], 42 * i + 21, 42 * j + 21);
-            }
-        }
-    }*/
 }
