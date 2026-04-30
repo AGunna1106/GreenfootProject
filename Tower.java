@@ -38,7 +38,7 @@ public abstract class Tower extends Actor
     public void act()
     {
         if (!placed) return;
-        
+
         Enemy target = findTarget();
 
         if (target != null)
@@ -67,10 +67,7 @@ public abstract class Tower extends Actor
 
     protected abstract void shoot(Enemy target);
 
-    // ----------------------------------------------------------------
     // Upgrade system
-    // ----------------------------------------------------------------
-
     public boolean canUpgrade()
     {
         return upgradeLevel < upgrade.length - 1;
@@ -106,17 +103,11 @@ public abstract class Tower extends Actor
         fireRate = upgrade[upgradeLevel][3];
     }
 
-    // ----------------------------------------------------------------
     // Placement helpers
-    // ----------------------------------------------------------------
-
     public void place()   { placed = true; }
     public boolean isPlaced() { return placed; }
 
-    // ----------------------------------------------------------------
     // Getters
-    // ----------------------------------------------------------------
-
     public int getCost()         { return cost; }
     public int getDamage()       { return damage; }
     public int getRange()        { return range; }
@@ -133,5 +124,16 @@ public abstract class Tower extends Actor
         else
             info += "MAX LEVEL";
         return info;
+    }
+
+    /**
+     * Directly sets the tower to a specific upgrade level without spending medals.
+     * Used by Round to recreate snapshot towers on restart-round.
+     */
+    public void applyUpgradeLevelDirectly(int level)
+    {
+        if (level < 0 || level >= upgrade.length) return;
+        upgradeLevel = level;
+        applyUpgradeStats();
     }
 }

@@ -3,6 +3,10 @@ import java.util.*;
 
 /**
  * Player – holds state for health, medals (gold), and round progress.
+ *
+ * Medals are now adjusted through a single adjustMedals(int) method:
+ *   positive amount  → add medals (reward)
+ *   negative amount  → spend medals (purchase); returns false if insufficient
  */
 public class Player
 {
@@ -16,68 +20,57 @@ public class Player
 
     public Player(String un, String pass)
     {
-        this.username = un;
-        this.password = pass;
+        this.username  = un;
+        this.password  = pass;
         this.pastStats = new ArrayList<>();
-        //This is just testing and also describes the formating in the txt file fo pastStats
-        //addPastStats("5;Easy;100;2");
     }
 
-    // ----------------------------------------------------------------
-    // Medals / Gold
-    // ----------------------------------------------------------------
-
-    public int getMedals()       { return medals; }
-    public void addMedals(int amount)  { medals += amount; }
+    // Medals
+    public int getMedals() { return medals; }
 
     /**
-     * Deducts the given amount.  Returns true if successful.
+     * Positive amount adds medals; negative amount spends medals.
+     * Returns false (and makes no change) when spending would go below 0.
      */
-    public boolean spendMedals(int amount)
+    public boolean adjustMedals(int amount)
     {
-        if (medals >= amount) { medals -= amount; return true; }
-        return false;
-    }
-    
-    public void setMedals(int medals) {
-        this.medals = medals;
-    }
-    
-    public void setHealth(int health) {
-        this.health = health;
+        if (amount < 0 && medals < -amount) return false;
+        medals += amount;
+        return true;
     }
 
-    public boolean canAfford(int cost) { return medals >= cost; }
+    // Convenience wrappers kept for backward compatibility
+    public void addMedals(int amount)      { adjustMedals(amount); }
+    public boolean spendMedals(int amount) { return adjustMedals(-amount); }
+    public boolean canAfford(int cost)     { return medals >= cost; }
 
-    // ----------------------------------------------------------------
+    public void setMedals(int medals)  { this.medals = medals; }
+    public void setHealth(int health)  { this.health = health; }
+
     // Health
-    // ----------------------------------------------------------------
-
-    public int getHealth()          { return health; }
+    public int  getHealth()           { return health; }
     public void reduceHealth(int amt) { health = Math.max(0, health - amt); }
-    public boolean isAlive()        { return health > 0; }
+    public boolean isAlive()          { return health > 0; }
 
-    // ----------------------------------------------------------------
     // Round
-    // ----------------------------------------------------------------
+    public int  getRound()      { return round; }
+    public void nextRound()     { round++; }
+    public void setRound(int r) { this.round = r; }
 
-    public int getRound()      { return round; }
-    public void nextRound()    { round++; }
-
-    // ----------------------------------------------------------------
     // Account
-    // ----------------------------------------------------------------
-
     public String getUsername() { return username; }
     public String getPassword() { return password; }
 
     public void act() { }
-    
-    public String getHighStats() {
+
+    // Past stats / leaderboard
+    public String getHighStats()
+    {
         return pastStats.isEmpty() ? null : pastStats.get(highStatsIndex);
     }
-    
-    private void setHighStats() {
+
+    private void setHighStats()
+    {
         if (pastStats.isEmpty()) {
             highStatsIndex = -1;
             return;
@@ -92,17 +85,12 @@ public class Player
         }
         highStatsIndex = highScoreIndex;
     }
-    
-    public void addPastStats(String stats) {
-        pastStats.add(stats);
-        setHighStats();
-    }
-    
-    public ArrayList<String> getPastStats() {
-        return pastStats;
-    }
-    
-    private int[] parseStats(String stat) {
+
+    public void addPastStats(String stats) { pastStats.add(stats); setHighStats(); }
+    public ArrayList<String> getPastStats() { return pastStats; }
+
+    private int[] parseStats(String stat)
+    {
         // format: rounds;difficulty;health;medals
         String[] parts = stat.split("\\;");
         int rounds = Integer.parseInt(parts[0]);
@@ -111,14 +99,16 @@ public class Player
         int medals = Integer.parseInt(parts[3]);
         return new int[]{rounds, difficulty, health, medals};
     }
-    
-    private int difficultyValue(String d) {
-        if (d.equals("Hard")) return 3;
+
+    private int difficultyValue(String d)
+    {
+        if (d.equals("Hard"))   return 3;
         if (d.equals("Medium")) return 2;
-        return 1; // Easy
+        return 1; //Easy
     }
-    
-    private boolean isBetter(int[] a, int[] b) {    
+
+    private boolean isBetter(int[] a, int[] b)
+    {
         if (a[0] != b[0]) return a[0] > b[0]; // rounds
         if (a[1] != b[1]) return a[1] > b[1]; // difficulty
         if (a[2] != b[2]) return a[2] > b[2]; // health

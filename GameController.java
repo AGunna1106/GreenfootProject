@@ -6,13 +6,15 @@ import greenfoot.*;
  */
 public class GameController
 {
-    private Player player;
+    private Player  player;
     private Manager manager;
-    private Game game;
+    private Game    game;
+    private GUI     gui;
 
-    public GameController()
+    public GameController(GUI gui)
     {
-        manager = new Manager();
+        this.gui = gui;
+        manager  = new Manager();
     }
 
     /**
@@ -27,10 +29,8 @@ public class GameController
             return "Password cannot be empty.";
 
         Player p = manager.getPlayer(username.trim(), password.trim());
-        if (p == null)
-        {
-            return "Incorrect password. Try again.";
-        }
+        if (p == null) return "Incorrect password. Try again.";
+
         player = p;
         return "Login successful!";
     }
@@ -38,15 +38,17 @@ public class GameController
     /**
      * Switches Greenfoot to a new Game world for the given map type.
      */
-    public Cell[][] initializeGame(int mapType)
+    public void initializeGame(int mapType)
     {
         player.setMedals(200);
         player.setHealth(100);
-        game = new Game(player);
-        //Don't switch worlds, pass it back to gui and let it display
-        //Greenfoot.setWorld(game);
-        return(game.setMap(mapType));
+        player.setRound(1);
+
+        game = new Game(player, gui);
+        game.setMap(mapType);
+        Greenfoot.setWorld(game);
     }
 
     public Player getCurrentPlayer() { return player; }
+    public Game   getGame()          { return game; }
 }
