@@ -85,7 +85,6 @@ public class Player
         }
         highStatsIndex = highScoreIndex;
     }
-    }
 
     public void addPastStats(String stats) { pastStats.add(stats); setHighStats(); }
     public ArrayList<String> getPastStats() { return pastStats; }
