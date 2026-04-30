@@ -43,7 +43,6 @@ public abstract class Tower extends Actor
 
         if (target != null)
         {
-            turnTowards(target.getX(), target.getY());
             attack(target);
         }
 
@@ -68,10 +67,7 @@ public abstract class Tower extends Actor
 
     protected abstract void shoot(Enemy target);
 
-    // ----------------------------------------------------------------
     // Upgrade system
-    // ----------------------------------------------------------------
-
     public boolean canUpgrade()
     {
         return upgradeLevel < upgrade.length - 1;
@@ -107,17 +103,11 @@ public abstract class Tower extends Actor
         fireRate = upgrade[upgradeLevel][3];
     }
 
-    // ----------------------------------------------------------------
     // Placement helpers
-    // ----------------------------------------------------------------
-
     public void place()   { placed = true; }
     public boolean isPlaced() { return placed; }
 
-    // ----------------------------------------------------------------
     // Getters
-    // ----------------------------------------------------------------
-
     public int getCost()         { return cost; }
     public int getDamage()       { return damage; }
     public int getRange()        { return range; }
