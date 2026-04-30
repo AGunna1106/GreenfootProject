@@ -38,12 +38,11 @@ public abstract class Tower extends Actor
     public void act()
     {
         if (!placed) return;
-
+        
         Enemy target = findTarget();
 
         if (target != null)
         {
-            turnTowards(target.getX(), target.getY());
             attack(target);
         }
 
