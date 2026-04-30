@@ -2,20 +2,20 @@ import greenfoot.*;
 
 /**
  * Map – builds the cell grid for a given map type.
- * Does not add actors to any world; GUI.startGame() handles that.
- *
+
  * Cell array layout: cells[row][col]
  *   addObject(cells[row][col], col*SZ+half, row*SZ+half)
  */
 public class Map
 {
     private Cell[][] cells;   // [row][col]
+    private World world;
 
     public Map(World world)
     {
-        // World parameter kept for API compatibility; not used.
-        cells = new Cell[12][12];
-    }
+        this.world = world;
+        int mapLength = 12;
+        cells = new Cell[mapLength][mapLength];    }
 
     public Cell[][] addCells(int mapType)
     {
