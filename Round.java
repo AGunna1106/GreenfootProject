@@ -12,9 +12,7 @@ import java.util.List;
  */
 public class Round
 {
-    // ----------------------------------------------------------------
     // Round snapshot state
-    // ----------------------------------------------------------------
     private int   snapshotMedals;
     private int   snapshotHealth;
     private int   snapshotRound;
@@ -38,19 +36,14 @@ public class Round
 
     private List<TowerRecord> snapshotTowers = new ArrayList<>();
 
-    // ----------------------------------------------------------------
     // Enemy / round progression fields (extend as needed)
-    // ----------------------------------------------------------------
     private Enemy[] enemies;
     private int     enemyCount;
     private int     roundCount;
 
     public Round() { }
 
-    // ----------------------------------------------------------------
     // Snapshot / Restore
-    // ----------------------------------------------------------------
-
     /**
      * Call this at the beginning of every round (before any towers are
      * placed or enemies spawn) to record the state we can restore to.
@@ -89,18 +82,11 @@ public class Round
     /** Returns the tower records from the snapshot (may be empty). */
     public List<TowerRecord> getSnapshotTowers() { return snapshotTowers; }
 
-    // ----------------------------------------------------------------
     // Round progression helpers (called by Game)
-    // ----------------------------------------------------------------
-
     public int  getRoundCount()  { return roundCount; }
     public void incrementRound() { roundCount++; }
 
     public Enemy[] getEnemies()  { return enemies; }
-
-    // ----------------------------------------------------------------
-    // Internal helpers
-    // ----------------------------------------------------------------
 
     /** Maps a concrete Tower subclass back to its type id. */
     private static int towerTypeOf(Tower t)
