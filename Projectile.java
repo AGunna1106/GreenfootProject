@@ -20,16 +20,24 @@ public class Projectile extends Actor
     
     public void act()
     {
-        if (target != null && getWorld() != null)
-        {
-            turnTowards(target.getX(), target.getY());
-            move(speed);
-            
-            if (intersects(target))
-            {
-                target.takeDamage(damage);
+        if (getWorld() == null || target == null || target.getWorld() == null) {
+            if (getWorld() != null) {
                 getWorld().removeObject(this);
             }
+            return;
+        }
+    
+        turnTowards(target.getX(), target.getY());
+        move(speed);
+    
+        if (intersects(target))
+        {
+            target.takeDamage(damage);
+    
+            if (getWorld() != null) {
+                getWorld().removeObject(this);
+            }
+            return;
         }
     }
     

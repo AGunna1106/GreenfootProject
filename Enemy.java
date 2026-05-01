@@ -24,7 +24,7 @@ public class Enemy extends Actor
         this.player = player;
         if(mapType == 0){
             path = new int[][] {
-                {100, 400},
+                {100, 350},
                 {100, 65},
                 {190, 65},
                 {190, 480},
@@ -38,7 +38,7 @@ public class Enemy extends Actor
             };
         }else{
             path = new int[][] {
-                {60, 480},
+                {60, 350},
                 {60, 20},
                 {480, 20},
                 {480, 440},
@@ -56,6 +56,7 @@ public class Enemy extends Actor
     
     public void act()
     {
+        if (((Game)getWorld()).isPaused()) return; 
         followPath();
     }
     

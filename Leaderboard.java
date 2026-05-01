@@ -43,19 +43,48 @@ public class Leaderboard
     
     private void insert(String entry)
     {
+        String username = entry.split(",", 2)[0];
         int[] newStats = parse(entry);
+    
+        for (int i = 0; i < topRanking.length; i++)
+        {
+            if (topRanking[i] != null)
+            {
+                String existingUser = topRanking[i].split(",", 2)[0];
+                if (existingUser.equals(username))
+                {
+                    int[] currentStats = parse(topRanking[i]);
+                    if (newStats != null && currentStats != null && isBetter(newStats, currentStats))
+                    {
+                        removeAt(i);
+                        break;
+                    }else
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+        
         for (int i = 0; i < topRanking.length; i++)
         {
             int[] current = parse(topRanking[i]);
-        
-            if (topRanking[i] == null || 
-               (newStats != null && current != null && isBetter(newStats, current)))
+            if (topRanking[i] == null || (newStats != null && current != null && isBetter(newStats, current)))
             {
                 shiftDown(i);
                 topRanking[i] = entry;
                 break;
             }
         }
+    }
+    
+    private void removeAt(int index)
+    {
+        for (int i = index; i < topRanking.length - 1; i++)
+        {
+            topRanking[i] = topRanking[i + 1];
+        }
+        topRanking[topRanking.length - 1] = null;
     }
     
     private void shiftDown(int index)
@@ -71,7 +100,7 @@ public class Leaderboard
         try {
             String[] splitUser = entry.split(",", 2);
             if (splitUser.length < 2) return null;
-    
+
             String[] parts = splitUser[1].split(";");
             if (parts.length < 4) return null;
     

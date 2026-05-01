@@ -38,8 +38,8 @@ public class Manager
             for (Player p : players.values()) {
                 StringBuilder stats = new StringBuilder();
                 if (!p.getPastStats().isEmpty()) {
-                    for (String s : p.getPastStats()) {
-                        stats.append(s).append("|");
+                    for (int i = p.getPastStats().size() - 1; i >= 0; i--) {
+                        stats.append(p.getPastStats().get(i)).append("|");
                     }
                     stats.deleteCharAt(stats.length() - 1);
                     bw.write(p.getUsername() + "," + p.getPassword() + "," + stats.toString());

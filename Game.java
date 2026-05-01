@@ -200,8 +200,8 @@ public class Game extends World
     private void spawnEnemy()
     {
         int r   = player.getRound();
-        int hp  = 50  + (r - 1) * 25;          // 50, 75, 100 …
-        int dmg = 10  + (r - 1) * 5;            // 10, 15, 20 …
+        int hp  = 3  + (r - 1) * 2;
+        int dmg = 1  + (r - 1);
         int spd = 1   + Math.min((r - 1) / 3, 2); // 1→2→3, capped at 3
         Enemy e = new Enemy(hp, dmg, spd, mapType, player);
         // Map 1 path starts at (100,400); Map 0 at (60,480)

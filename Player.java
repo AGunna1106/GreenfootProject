@@ -62,6 +62,17 @@ public class Player
     public String getPassword() { return password; }
 
     public void act() { }
+    
+    public int endState() {
+        int result = 0; // Player did not complete
+        
+        if (health <= 0) { // Lost all health
+            result = 1;
+        } else if (round >= 15) { // Past Round 15
+            result = 2;
+        }
+        return result;
+    }
 
     // Past stats / leaderboard
     public String getHighStats()
@@ -87,12 +98,15 @@ public class Player
     }
 
     public void addPastStats(String stats) { 
-        pastStats.add(stats);
-        if (pastStats.size() > 5) {
-            pastStats.remove(0); // remove oldest
-        }
+        pastStats.add(0, stats);
         setHighStats(); 
     }
+    
+    public void addDifficulty(String difficulty) {
+        String stats = round + ";" + difficulty + ";" + health + ";" + medals;
+        addPastStats(stats);
+    }
+    
     public ArrayList<String> getPastStats() {
         return pastStats; 
     }

@@ -30,7 +30,7 @@ public class Cell extends Actor
 
     public boolean isValid()       { return isValid && !occupied; }
     public void setIsValid(boolean v) { isValid = v; }
-    public boolean isPath()        { return isPath; }
+    public boolean getIsPath()        { return isPath; }
     public void setIsPath(boolean p)  { isPath = p; }
 
     // ----------------------------------------------------------------

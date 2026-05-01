@@ -37,7 +37,7 @@ public abstract class Tower extends Actor
 
     public void act()
     {
-        if (!placed) return;
+        if (!placed || ((Game)getWorld()).isPaused()) return;
 
         Enemy target = findTarget();
 

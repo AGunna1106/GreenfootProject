@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Difficulty extends Actor
+public class Difficulty
 {
     private int multiplierScale;
     private String selection;
@@ -16,6 +16,10 @@ public class Difficulty extends Actor
      */
     public Difficulty()
     {    
-
+        selection = "EASY";
+    }
+    
+    public String getSelection() {
+        return selection;
     }
 }

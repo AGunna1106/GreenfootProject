@@ -10,6 +10,7 @@ public class GameController
     private Manager manager;
     private Game    game;
     private GUI     gui;
+    private Difficulty     difficulty;
     private Leaderboard leaderboard;
 
     public GameController(GUI gui)
@@ -45,6 +46,8 @@ public class GameController
         player.setMedals(200);
         player.setHealth(100);
         player.setRound(1);
+        
+        difficulty = new Difficulty();
 
         game = new Game(player, gui);
         game.setMap(mapType);
@@ -55,6 +58,16 @@ public class GameController
         Player[] temp = manager.getAllPlayers();
         leaderboard.setTopRanking(temp);
         return new String[][] {leaderboard.getTopRanking(), player.getPastStats().toArray(new String[0])};
+    }
+    
+    public int endGame() {
+        String difficult = difficulty.getSelection();
+    
+        player.addDifficulty(difficult);
+        int end = player.endState();
+        manager.savePlayer(player);
+    
+        return end;
     }
 
     public Player getCurrentPlayer() { return player; }

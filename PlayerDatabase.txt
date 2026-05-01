@@ -1,13 +1,2 @@
-hi,okok,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
-okkm,momm
-okk,ok,1;Easy;100;200|2;Easy;100;2|3;Easy;100;2|4;Easy;100;2|5;Easy;100;2|6;Easy;100;1000|7;Easy;100;2
-o,o,5;Easy;100;2|5;Easy;100;2
-meep,meep,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
-momm,momm,5;Easy;100;55|5;Easy;100;2022
-123,123,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
-okokok,o,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
-kmkm,knmkm
-knmkm,knmkm
-hello,hello,5;Easy;100;11|5;Easy;100;2|5;Easy;100;2
-ok,ok,5;Easy;100;2|5;Easy;100;2|5;Easy;100;2
-he,he,5;Easy;100;2
+Hello,hello,1;EASY;100;140
+sup,sup,1;EASY;100;200|1;EASY;100;200|3;EASY;100;190|1;EASY;100;200|2;EASY;100;130|1;EASY;100;200|1;EASY;100;200|1;EASY;100;200|1;EASY;100;200|1;EASY;100;200|1;EASY;100;200

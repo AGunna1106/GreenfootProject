@@ -37,7 +37,8 @@ public class GUI extends World
     
     private enum Screen {
         MENU,
-        LEADERBOARD
+        LEADERBOARD,
+        GAMEOVER
     }
     private Screen currentScreen;
 
@@ -59,7 +60,7 @@ public class GUI extends World
             return;
         }
 
-        if (waitingToSwitch && delayCounter > 120)
+        if (waitingToSwitch && delayCounter > 120 && currentScreen != Screen.GAMEOVER)
         {
             waitingToSwitch = false;
             loggedIn        = true;
@@ -67,7 +68,7 @@ public class GUI extends World
             return;
         }
 
-        if (loggedIn && Greenfoot.mouseClicked(null))
+        if (Greenfoot.mouseClicked(null) && (loggedIn || currentScreen == Screen.GAMEOVER))
         {
             MouseInfo mouse = Greenfoot.getMouseInfo();
             if (mouse != null) {
@@ -78,6 +79,8 @@ public class GUI extends World
                     handleMenuClick(x, y);
                 else if (currentScreen == Screen.LEADERBOARD)
                     handleLeaderboardClick(x, y);
+                else if (currentScreen == Screen.GAMEOVER)
+                    handleGameOverClick(x, y);
             }
         }
     }
@@ -88,7 +91,7 @@ public class GUI extends World
         String un   = Greenfoot.ask("Enter Username:");
         String pass = Greenfoot.ask("Enter Password:");
         String result = gameController.verifyPlayer(un, pass);
-        showText(result, 273, 250);
+        showText(result, getWidth() / 2, getHeight() / 2);
 
         delayCounter = 0;
         if (result.equals("Login successful!"))
@@ -307,7 +310,40 @@ public class GUI extends World
         bg.setColor(new Color(0, 0, 0));
         bg.fill();
         setBackground(bg);
-        showText("Loading... press Run to start", cx, WORLD_H / 2);
+        gameOver();
+    }
+    
+    public void gameOver() {
+        currentScreen = Screen.GAMEOVER;
+        int result = gameController.endGame();
+        Player p = gameController.getCurrentPlayer();
+    
+        clearMenuText();
+        GreenfootImage bg = new GreenfootImage(getWidth(), getHeight());
+        bg.setColor(new Color(20, 20, 30));
+        bg.fill();
+        int cx = getWidth() / 2;
+        
+        bg.setColor(new Color(255, 80, 80));
+        bg.drawString("GAME OVER", cx - 40, 80);
+        String msg = result == 2 ? "You Won!" : result == 1 ? "You Lost!" : "You Quit!";
+        bg.setColor(new Color(200, 200, 200));
+        bg.drawString(msg, cx - 30, 140);
+    
+        bg.setColor(new Color(180, 180, 210));
+        bg.drawString("Round:      " + p.getRound(),      cx - 45, 185);
+        bg.drawString("Medals:     " + p.getMedals(),     cx - 45, 210);
+        bg.drawString("Health:     " + p.getHealth(),     cx - 45, 235);    
+        bg.setColor(new Color(120, 120, 160));
+        bg.drawString("Click to return to menu", cx - 80, 340);
+    
+        setBackground(bg);
+    }
+    
+    private void handleGameOverClick(int x, int y)
+    {
+        drawMenu();
+        loggedIn = true;
     }
 
     public void refreshPanel(Game game)
