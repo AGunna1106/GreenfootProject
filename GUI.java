@@ -366,7 +366,8 @@ public class GUI extends World
             drawPausedPanel(bg, game);
         else
             drawNormalPanel(bg, game);
-
+        
+        
         game.setBackground(bg);
     }
 
@@ -497,4 +498,5 @@ public class GUI extends World
     {
         return y >= centreY - BTN_H / 2 && y <= centreY + BTN_H / 2;
     }
-}
+    
+    }
