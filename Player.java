@@ -86,13 +86,24 @@ public class Player
         highStatsIndex = highScoreIndex;
     }
 
-    public void addPastStats(String stats) { pastStats.add(stats); setHighStats(); }
-    public ArrayList<String> getPastStats() { return pastStats; }
+    public void addPastStats(String stats) { 
+        pastStats.add(stats);
+        if (pastStats.size() > 5) {
+            pastStats.remove(0); // remove oldest
+        }
+        setHighStats(); 
+    }
+    public ArrayList<String> getPastStats() {
+        return pastStats; 
+    }
 
     private int[] parseStats(String stat)
     {
         // format: rounds;difficulty;health;medals
         String[] parts = stat.split("\\;");
+        if (parts.length != 4) {
+            return new int[]{0,0,0,0}; // new player with no stats
+        }
         int rounds = Integer.parseInt(parts[0]);
         int difficulty = difficultyValue(parts[1]); // convert to number
         int health = Integer.parseInt(parts[2]);

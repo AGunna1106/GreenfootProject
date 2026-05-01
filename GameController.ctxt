@@ -1,14 +1,18 @@
 #BlueJ class context
 comment0.target=GameController
 comment0.text=\r\n\ GameController\ \u2013\ bridges\ the\ GUI\ login\ screen\ and\ the\ Game\ world.\r\n\ Verifies\ /\ creates\ players\ via\ Manager\ and\ launches\ a\ Game\ session.\r\n
-comment1.params=
-comment1.target=GameController()
+comment1.params=gui
+comment1.target=GameController(GUI)
 comment2.params=username\ password
 comment2.target=java.lang.String\ verifyPlayer(java.lang.String,\ java.lang.String)
 comment2.text=\r\n\ Attempts\ login\ or\ auto-creates\ a\ new\ account.\r\n\ Returns\ a\ status\ message\ for\ the\ GUI\ to\ display.\r\n
 comment3.params=mapType
-comment3.target=Cell[][]\ initializeGame(int)
+comment3.target=void\ initializeGame(int)
 comment3.text=\r\n\ Switches\ Greenfoot\ to\ a\ new\ Game\ world\ for\ the\ given\ map\ type.\r\n
 comment4.params=
-comment4.target=Player\ getCurrentPlayer()
-numComments=5
+comment4.target=java.lang.String[][]\ requestLeaderboard()
+comment5.params=
+comment5.target=Player\ getCurrentPlayer()
+comment6.params=
+comment6.target=Game\ getGame()
+numComments=7

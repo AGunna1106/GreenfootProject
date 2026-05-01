@@ -32,6 +32,13 @@ public class GUI extends World
     private int     delayCounter    = 0;
     private int     mapType         = 0;
     private GameController gameController;
+    
+    
+    private enum Screen {
+        MENU,
+        LEADERBOARD
+    }
+    private Screen currentScreen;
 
     // Constructor
     public GUI()
@@ -44,7 +51,7 @@ public class GUI extends World
     public void act()
     {
         delayCounter++;
-        if (!loginStarted)
+        if (!loginStarted && delayCounter > 120)
         {
             loginStarted = true;
             login();
@@ -62,7 +69,15 @@ public class GUI extends World
         if (loggedIn && Greenfoot.mouseClicked(null))
         {
             MouseInfo mouse = Greenfoot.getMouseInfo();
-            if (mouse != null) handleMenuClick(mouse.getX(), mouse.getY());
+            if (mouse != null) {
+                int x = mouse.getX();
+                int y = mouse.getY();
+        
+                if (currentScreen == Screen.MENU)
+                    handleMenuClick(x, y);
+                else if (currentScreen == Screen.LEADERBOARD)
+                    handleLeaderboardClick(x, y);
+            }
         }
     }
 
@@ -80,12 +95,124 @@ public class GUI extends World
         else
             loginStarted = false;
     }
+    
+    // Leaderboard
+    public void clickLeaderboard()
+    {
+        currentScreen = Screen.LEADERBOARD;
+        String[][] stats = gameController.requestLeaderboard();
+    
+        clearMenuText();
+        GreenfootImage bg = new GreenfootImage(getWidth(), getHeight());
+        bg.setColor(new Color(26, 26, 46));
+        bg.fill();
+        setBackground(bg);
+    
+        // === HEADER ===
+        bg.setColor(new Color(42, 42, 74));
+        bg.fillRect(0, 0, getWidth(), 40);
+        bg.setColor(new Color(85, 85, 120));
+        bg.drawLine(0, 40, getWidth(), 40);
+        bg.setColor(new Color(255, 215, 0));
+        bg.drawString("** LEADERBOARD **", getWidth() / 2 - 60, 26);
+    
+        // === TOP 5 SECTION LABEL ===
+        bg.setColor(new Color(150, 150, 180));
+        bg.drawString("TOP 5:       Username              Round              Difficulty            Health               Medals", 20, 65);
+        bg.drawLine(20, 68, getWidth() - 20, 68);
+    
+        // === TOP 5 ROWS ===
+        Color[] rankColors = {
+            new Color(255, 215, 0),   // gold
+            new Color(192, 192, 192), // silver
+            new Color(205, 127, 50),  // bronze
+            new Color(150, 150, 150), // 4th
+            new Color(150, 150, 150)  // 5th
+        };
+    
+        for (int i = 0; i < 5; i++) {
+            int rowY = 80 + i * 46;
+    
+            // Row background (alternate shading)
+            bg.setColor(i % 2 == 0 ? new Color(38, 38, 62) : new Color(32, 32, 52));
+            bg.fillRect(10, rowY, getWidth() - 20, 38);
+            bg.setColor(new Color(60, 60, 90));
+            bg.drawRect(10, rowY, getWidth() - 20, 38);
+    
+            // Rank number
+            bg.setColor(rankColors[i]);
+            bg.drawString(String.valueOf(i + 1), 20, rowY + 24);
+    
+            // Player name and score
+            if (stats[0] != null && i < stats[0].length && stats[0][i] != null) {
+                bg.setColor(new Color(220, 220, 240));
+                
+                bg.setColor(new Color(180, 200, 255));
+                String[] splitUser = stats[0][i].split(",", 2);
+                String[] splitStats = splitUser[1].split(";");
+                bg.drawString(splitUser[0], 55, rowY + 24);
+                for (int x = 1; x < splitStats.length + 1; x++ ) {
+                    bg.drawString(splitStats[x-1], (x * 80) + 100, rowY + 24);
+                }
+            } else {
+                bg.setColor(new Color(100, 100, 120));
+                bg.drawString("---", 40, rowY + 14);
+            }
+        }
+    
+        // === DIVIDER ===
+        int divY = 320;
+        bg.setColor(new Color(85, 85, 120));
+        bg.drawLine(10, divY, getWidth() - 10, divY);
+    
+        // === YOUR STATS SECTION ===
+        bg.setColor(new Color(150, 150, 180));
+        bg.drawString("YOUR STATS", 20, divY + 20);
+    
+        bg.setColor(new Color(42, 42, 74));
+        bg.fillRect(10, divY + 28, getWidth() - 20, 100);
+        bg.setColor(new Color(60, 60, 90));
+        bg.drawRect(10, divY + 28, getWidth() - 20, 100);
+    
+        if (stats[1] != null) {
+            int statY = divY + 46;
+            for (int i = 0; i < stats[1].length && i < 5; i++) {
+                bg.setColor(new Color(180, 200, 255));
+                String[] splitStats = stats[1][i].split(";");
+                bg.drawString(i + "    games ago" , 35, statY + i * 20);
+                for (int x = 1; x < splitStats.length + 1; x++ ) {
+                    bg.drawString(splitStats[x-1], (x * 80) + 100, statY + i * 20);
+                }
+            }
+        }
+    
+        // === BACK BUTTON ===
+        bg.setColor(new Color(80, 40, 30));
+        bg.fillRect(10, getHeight() - 40, getWidth() - 20, 30);
+        bg.setColor(new Color(160, 80, 50));
+        bg.drawRect(10, getHeight() - 40, getWidth() - 20, 30);
+        bg.setColor(new Color(240, 140, 100));
+        bg.drawString("<- BACK TO MENU", 30, getHeight() - 20);
+    
+        setBackground(bg);
+    }
+    
+    private void handleLeaderboardClick(int x, int y)
+    {
+        // Back button hitbox
+        if (y > getHeight() - 40 && y < getHeight() - 10 && x > 10 && x < getWidth() - 10)
+        {
+            drawMenu();
+        }
+    }
 
     // Menu drawing
     private void drawMenu()
     {
-        showText("", 273, 250);                    // clear "Login successful!" overlay
-        showText("", getWidth() / 2, WORLD_H / 2); // clear "Loading..." overlay
+        currentScreen = Screen.MENU;
+        
+        showText("", 273, 250);                    // clear overlay
+        showText("", getWidth() / 2, WORLD_H / 2); // clear overlay
         getBackground().clear();
         GreenfootImage bg = new GreenfootImage(getWidth(), getHeight());
         bg.setColor(new Color(0, 0, 0));
@@ -122,7 +249,8 @@ public class GUI extends World
         }
         else if (isWithin(x, y, 400))
         {
-            showMessage("Leaderboard coming soon!");
+            currentScreen = Screen.LEADERBOARD;
+            clickLeaderboard();
         }
         else if (choosingMap && y > 455 && y < 485)
         {
@@ -146,6 +274,11 @@ public class GUI extends World
     public void startGame(int mapType)
     {
         loggedIn = false;
+        clearMenuText();
+        gameController.initializeGame(mapType);
+    }
+    
+    private void clearMenuText() {
         showText("", getWidth()/2, 100);
         showText("", getWidth()/2, 200);
         showText("", getWidth()/2, 250);
@@ -153,7 +286,6 @@ public class GUI extends World
         showText("", getWidth()/2, 350);
         showText("", getWidth()/2, 400);
         showText("", getWidth()/2, 470);
-        gameController.initializeGame(mapType);
     }
 
     public void prepareForReturn()

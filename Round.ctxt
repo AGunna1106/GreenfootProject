@@ -1,7 +1,24 @@
 #BlueJ class context
 comment0.target=Round
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Round\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ Round\ \u2013\ manages\ per-round\ state\ and\ snapshot/restore\ logic.\r\n\r\n\ At\ the\ START\ of\ each\ round,\ call\ snapshotRoundStart()\ to\ record\r\n\ the\ player's\ medals,\ health,\ round\ number,\ and\ which\ towers\ are\ placed.\r\n\ When\ the\ player\ hits\ "Restart\ Round",\ call\ restoreRoundStart()\ to\r\n\ wind\ everything\ back\ to\ that\ snapshot\ \u2014\ without\ wiping\ the\ whole\ game.\r\n
 comment1.params=
 comment1.target=Round()
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Round.\r\n\ \r\n
-numComments=2
+comment2.params=player\ placedTowers\ cellSize
+comment2.target=void\ snapshotRoundStart(Player,\ java.util.List,\ int)
+comment2.text=\r\n\ Call\ this\ at\ the\ beginning\ of\ every\ round\ (before\ any\ towers\ are\r\n\ placed\ or\ enemies\ spawn)\ to\ record\ the\ state\ we\ can\ restore\ to.\r\n\r\n\ @param\ player\ \ \ \ \ \ \ \ the\ current\ player\r\n\ @param\ placedTowers\ \ list\ of\ towers\ already\ on\ the\ map\ (may\ be\ empty\ for\ round\ 1)\r\n\ @param\ cellSize\ \ \ \ \ \ pixel\ size\ of\ each\ grid\ cell\ (needed\ to\ recover\ col/row)\r\n
+comment3.params=player
+comment3.target=void\ restorePlayerToSnapshot(Player)
+comment3.text=\r\n\ Restores\ player\ stats\ to\ the\ snapshot\ taken\ at\ round\ start.\r\n\ Does\ NOT\ touch\ the\ world\ or\ towers\ \u2014\ Game.restartRound()\ does\ that\r\n\ after\ calling\ this\ method\ and\ using\ getSnapshotTowers()\ to\ rebuild.\r\n
+comment4.params=
+comment4.target=java.util.List\ getSnapshotTowers()
+comment4.text=Returns\ the\ tower\ records\ from\ the\ snapshot\ (may\ be\ empty).
+comment5.params=
+comment5.target=int\ getRoundCount()
+comment6.params=
+comment6.target=void\ incrementRound()
+comment7.params=
+comment7.target=Enemy[]\ getEnemies()
+comment8.params=t
+comment8.target=int\ towerTypeOf(Tower)
+comment8.text=Maps\ a\ concrete\ Tower\ subclass\ back\ to\ its\ type\ id.
+numComments=9
