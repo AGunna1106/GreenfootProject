@@ -20,8 +20,16 @@ public class Game extends World
     private Round  round;
     private GUI    gui;   // reference only for restartGame() world-switch
 
+    private int mapType = 0;
+
     private boolean isPaused = false;
     private boolean showHelp = false;
+
+    // Wave / spawning state
+    private boolean roundActive   = false;
+    private int     spawnQueue    = 0;
+    private int     spawnCooldown = 0;
+    private static final int SPAWN_INTERVAL = 60; // ~1 s at 60 fps
 
     private int   pendingTowerType = 0; // 0=none 1=Fast 2=Long 3=Splash
     private Tower pendingTower     = null;
@@ -42,6 +50,7 @@ public class Game extends World
 
     public Cell[][] setMap(int mapType)
     {
+        this.mapType = mapType;
         Cell[][] cells = map.addCells(mapType);
 
         for (int row = 0; row < cells.length; row++)
@@ -83,6 +92,13 @@ public class Game extends World
                 else
                     handleMapClick(x, y);
             }
+        }
+
+        if (!isPaused)
+        {
+            tickSpawner();
+            checkRoundEnd();
+            if (!player.isAlive()) handleGameOver();
         }
     }
 
@@ -159,11 +175,79 @@ public class Game extends World
             showText("", cx, yy);
     }
 
+    // ── Wave / Round Progression ─────────────────────────────────────
+    /** Called by the panel "Start Wave" button. */
+    public void startWave()
+    {
+        if (roundActive) return;
+        int r = player.getRound();
+        spawnQueue    = 5 + (r - 1) * 2;   // 5, 7, 9, 11 …
+        spawnCooldown = 0;
+        roundActive   = true;
+        showStatusMessage("Round " + r + " — " + spawnQueue + " enemies incoming!");
+        gui.refreshPanel(this);
+    }
+
+    private void tickSpawner()
+    {
+        if (!roundActive || spawnQueue <= 0) return;
+        if (spawnCooldown > 0) { spawnCooldown--; return; }
+        spawnEnemy();
+        spawnQueue--;
+        spawnCooldown = SPAWN_INTERVAL;
+    }
+
+    private void spawnEnemy()
+    {
+        int r   = player.getRound();
+        int hp  = 50  + (r - 1) * 25;          // 50, 75, 100 …
+        int dmg = 10  + (r - 1) * 5;            // 10, 15, 20 …
+        int spd = 1   + Math.min((r - 1) / 3, 2); // 1→2→3, capped at 3
+        Enemy e = new Enemy(hp, dmg, spd, mapType, player);
+        // Map 1 path starts at (100,400); Map 0 at (60,480)
+        int[] start = (mapType == 0) ? new int[]{100, 400} : new int[]{60, 480};
+        addObject(e, start[0], start[1]);
+    }
+
+    private void checkRoundEnd()
+    {
+        if (!roundActive) return;
+        if (spawnQueue > 0) return;
+        if (!getObjects(Enemy.class).isEmpty()) return;
+
+        roundActive = false;
+        int bonus = 50 + player.getRound() * 10;
+        player.addMedals(bonus);
+        showStatusMessage("Round " + player.getRound() + " complete!  +" + bonus + " medal bonus");
+        beginNewRound();
+        gui.refreshPanel(this);
+    }
+
+    private void handleGameOver()
+    {
+        for (Enemy e : getObjects(Enemy.class)) removeObject(e);
+        roundActive = false;
+        gui.prepareForReturn();
+        Greenfoot.setWorld(gui);
+    }
+
+    /** Total enemies still alive or yet to spawn this wave. */
+    public int getEnemiesRemaining()
+    {
+        return spawnQueue + getObjects(Enemy.class).size();
+    }
+
+    public boolean isRoundActive() { return roundActive; }
+
     // UC4: Restart Round
     public void restartRound()
     {
         for (Tower t : towers) removeObject(t);
         towers.clear();
+        for (Enemy e : getObjects(Enemy.class)) removeObject(e);
+        roundActive   = false;
+        spawnQueue    = 0;
+        spawnCooldown = 0;
         selectedTower    = null;
         pendingTowerType = 0;
         if (pendingTower != null) { removeObject(pendingTower); pendingTower = null; }
@@ -322,4 +406,4 @@ public class Game extends World
     public Player  getPlayer()           { return player; }
     public Tower   getSelectedTower()    { return selectedTower; }
     public int     getPendingTowerType() { return pendingTowerType; }
-}
+}   

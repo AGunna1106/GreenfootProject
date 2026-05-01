@@ -22,7 +22,7 @@ public class Enemy extends Actor
         this.damage = damage;
         this.speed = speed;
         this.player = player;
-        if(mapType == 1){
+        if(mapType == 0){
             path = new int[][] {
                 {100, 400},
                 {100, 65},
@@ -80,6 +80,7 @@ public class Enemy extends Actor
         if (currentPoint >= path.length) 
         {
             dealDamage();
+            return;   // must stop here — path array is exhausted
         }
 
         int targetX = path[currentPoint][0];
@@ -88,8 +89,7 @@ public class Enemy extends Actor
         turnTowards(targetX, targetY);
         move(speed);
 
-        // Check if close enough to waypoint
-        if (Math.abs(getX() - targetX) < 5 && Math.abs(getY() - targetY) < 5)
+        if (Math.abs(getX() - targetX) < speed + 3 && Math.abs(getY() - targetY) < speed + 3)
         {
             currentPoint++;
         }
