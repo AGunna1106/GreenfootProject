@@ -16,6 +16,7 @@ public class GUI extends World
     static final int BTN_LONG_Y         = 135;
     static final int BTN_SPLASH_Y       = 175;
     static final int BTN_UPGRADE_Y      = 290;
+    static final int BTN_START_WAVE_Y   = 360;
     static final int BTN_PAUSE_Y        = 480;
     static final int BTN_RESUME_Y       = 220;
     static final int BTN_HELP_Y         = 270;
@@ -164,9 +165,9 @@ public class GUI extends World
         for (int yy : new int[]{100, 200, 250, 300, 350, 400, 470})
             showText("", cx, yy);
 
-        loginStarted    = false;
+        loginStarted    = true;
         loggedIn        = false;
-        waitingToSwitch = false;
+        waitingToSwitch = true;
         choosingMap     = false;
         delayCounter    = 0;
 
@@ -255,6 +256,19 @@ public class GUI extends World
         bg.setColor(new Color(80, 80, 110));
         bg.drawLine(PANEL_X + 4, 320, PANEL_X + PANEL_W - 4, 320);
 
+        // Wave button / status
+        if (!game.isRoundActive())
+        {
+            drawBtn(bg, " START WAVE", BTN_START_WAVE_Y, false, new Color(40, 140, 60));
+        }
+        else
+        {
+            bg.setColor(new Color(120, 220, 120));
+            bg.drawString("Wave active!", px, BTN_START_WAVE_Y - 6);
+            bg.setColor(new Color(200, 200, 200));
+            bg.drawString("Enemies: " + game.getEnemiesRemaining(), px, BTN_START_WAVE_Y + 10);
+        }
+
         drawBtn(bg, "  PAUSE", BTN_PAUSE_Y, false, new Color(160, 80, 30));
     }
 
@@ -285,6 +299,7 @@ public class GUI extends World
         else if (inBtn(y, BTN_LONG_Y))    game.startPlacement(2);
         else if (inBtn(y, BTN_SPLASH_Y))  game.startPlacement(3);
         else if (inBtn(y, BTN_UPGRADE_Y)) game.handleUpgrade();
+        else if (!game.isRoundActive() && inBtn(y, BTN_START_WAVE_Y)) game.startWave();
         else if (inBtn(y, BTN_PAUSE_Y))   game.doPause();
     }
 
