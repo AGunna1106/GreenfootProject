@@ -10,7 +10,7 @@ public class GameController
     private Manager manager;
     private Game    game;
     private GUI     gui;
-    private Difficulty     difficulty;
+    private Difficulty     difficulty = new Difficulty("EASY");
     private Leaderboard leaderboard;
 
     public GameController(GUI gui)
@@ -46,10 +46,8 @@ public class GameController
         player.setMedals(200);
         player.setHealth(100);
         player.setRound(1);
-        
-        difficulty = new Difficulty();
 
-        game = new Game(player, gui);
+        game = new Game(player, gui, difficulty);
         game.setMap(mapType);
         Greenfoot.setWorld(game);
     }
@@ -68,6 +66,10 @@ public class GameController
         manager.savePlayer(player);
     
         return end;
+    }
+    
+    public void updateDifficulty(Difficulty selection){
+        difficulty = selection;
     }
 
     public Player getCurrentPlayer() { return player; }

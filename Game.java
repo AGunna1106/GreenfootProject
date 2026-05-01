@@ -19,6 +19,7 @@ public class Game extends World
     private Player player;
     private Round  round;
     private GUI    gui;   // reference only for restartGame() world-switch
+    private Difficulty difficulty;
 
     private int mapType = 0;
 
@@ -39,13 +40,14 @@ public class Game extends World
     private List<Tower> towers = new ArrayList<>();
 
     // Constructor
-    public Game(Player player, GUI gui)
+    public Game(Player player, GUI gui, Difficulty difficulty)
     {
         super(WORLD_W, WORLD_H, 1);
         this.player = player;
         this.gui    = gui;
         this.round  = new Round();
         this.map    = new Map(this);
+        this.difficulty = difficulty;
     }
 
     public Cell[][] setMap(int mapType)
@@ -200,9 +202,10 @@ public class Game extends World
     private void spawnEnemy()
     {
         int r   = player.getRound();
-        int hp  = 3  + (r - 1) * 2;
+        int hp  = 3  + (r - 1) * 2 + (difficulty.getMultiplier() * difficulty.getMultiplier());
         int dmg = 1  + (r - 1);
-        int spd = 1   + Math.min((r - 1) / 3, 2); // 1→2→3, capped at 3
+        int spd = 1   + Math.min((r - 1) / 3, 2) + (difficulty.getMultiplier() - 1); 
+        // 1→2→3, capped at 3
         Enemy e = new Enemy(hp, dmg, spd, mapType, player);
         // Map 1 path starts at (100,400); Map 0 at (60,480)
         int[] start = (mapType == 0) ? new int[]{100, 400} : new int[]{60, 480};

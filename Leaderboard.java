@@ -117,8 +117,8 @@ public class Leaderboard
 
     private int difficultyValue(String d)
     {
-        if (d.equals("Hard")) return 3;
-        if (d.equals("Medium")) return 2;
+        if (d.equals("HARD")) return 3;
+        if (d.equals("MEDIUM")) return 2;
         return 1;
     }
 

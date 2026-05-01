@@ -14,12 +14,23 @@ public class Difficulty
      * Constructor for objects of class Difficulty.
      * 
      */
-    public Difficulty()
+    public Difficulty(String selection)
     {    
-        selection = "EASY";
+        this.selection = selection;
+        if(selection == "EASY") {
+            this.multiplierScale = 1;
+        }else if(selection == "MEDIUM"){
+            this.multiplierScale = 2;
+        }else if(selection == "HARD"){
+            this.multiplierScale = 3;
+        }
     }
     
     public String getSelection() {
         return selection;
+    }
+    
+    public int getMultiplier(){
+        return multiplierScale;
     }
 }

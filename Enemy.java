@@ -11,7 +11,7 @@ public class Enemy extends Actor
     private int health;
     private int damage;
     private int speed;
-    private int reward = 5;
+    private int reward;
     private int[][] path;
     private int currentPoint = 0;
     private Player player;
@@ -22,6 +22,7 @@ public class Enemy extends Actor
         this.damage = damage;
         this.speed = speed;
         this.player = player;
+        this.reward = health;
         if(mapType == 0){
             path = new int[][] {
                 {100, 350},

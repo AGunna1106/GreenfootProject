@@ -32,6 +32,8 @@ public class GUI extends World
     private boolean choosingMap     = false;
     private int     delayCounter    = 0;
     private int     mapType         = 0;
+    private Difficulty selectedDifficulty = new Difficulty("MEDIUM"); //default
+    private boolean choosingDifficulty = false;
     private GameController gameController;
     
     
@@ -40,6 +42,7 @@ public class GUI extends World
         LEADERBOARD,
         GAMEOVER
     }
+    
     private Screen currentScreen;
 
     // Constructor
@@ -245,7 +248,8 @@ public class GUI extends World
         }
         else if (isWithin(x, y, 300))
         {
-            showMessage("Difficulty: Easy / Medium / Hard (placeholder)");
+            choosingDifficulty = true;
+            showMessage("Select Difficulty: [Easy] [Medium] [Hard]");
         }
         else if (isWithin(x, y, 350))
         {
@@ -262,8 +266,34 @@ public class GUI extends World
             if      (x > half - 60 && x < half + 50) { mapType = 0; showMessage("Map 1 selected"); choosingMap = false; }
             else if (x > half + 50 && x < half + 120) { mapType = 1; showMessage("Map 2 selected"); choosingMap = false; }
         }
-    }
+        else if (choosingDifficulty && y > 455 && y < 485)
+        {
+            int half = getWidth() / 2;
 
+            if (x > half - 40 && x < half + 30)
+            {
+                selectedDifficulty = new Difficulty("EASY");
+                gameController.updateDifficulty(selectedDifficulty);
+                showMessage("Difficulty: EASY");
+                choosingDifficulty = false;
+            }
+            else if (x > half + 30 && x < half + 110)
+            {
+                selectedDifficulty = new Difficulty("MEDIUM");
+                gameController.updateDifficulty(selectedDifficulty);
+                showMessage("Difficulty: MEDIUM");
+                choosingDifficulty = false;
+            }
+            else if (x > half + 110 && x < half + 180)
+            {
+                selectedDifficulty = new Difficulty("HARD");
+                gameController.updateDifficulty(selectedDifficulty);
+                showMessage("Difficulty: HARD");
+                choosingDifficulty = false;
+            
+            }
+        }
+    }
     private boolean isWithin(int x, int y, int optionY)
     {
         return x > 150 && x < 400 && y > optionY - 15 && y < optionY + 15;
