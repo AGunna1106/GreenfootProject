@@ -1,9 +1,8 @@
 #BlueJ class context
 comment0.target=Map
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ MyWorld\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ Map\ \u2013\ builds\ the\ cell\ grid\ for\ a\ given\ map\ type.\r\n\r\n\ Cell\ array\ layout\:\ cells[row][col]\r\n\ \ \ addObject(cells[row][col],\ col*SZ+half,\ row*SZ+half)\r\n
 comment1.params=world
 comment1.target=Map(greenfoot.World)
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ MyWorld.\r\n\ \r\n
 comment2.params=mapType
 comment2.target=Cell[][]\ addCells(int)
 comment3.params=mapType

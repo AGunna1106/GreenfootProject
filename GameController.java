@@ -10,11 +10,13 @@ public class GameController
     private Manager manager;
     private Game    game;
     private GUI     gui;
+    private Leaderboard leaderboard;
 
     public GameController(GUI gui)
     {
         this.gui = gui;
         manager  = new Manager();
+        leaderboard = new Leaderboard();
     }
 
     /**
@@ -47,6 +49,12 @@ public class GameController
         game = new Game(player, gui);
         game.setMap(mapType);
         Greenfoot.setWorld(game);
+    }
+    
+    public String[][] requestLeaderboard() {
+        Player[] temp = manager.getAllPlayers();
+        leaderboard.setTopRanking(temp);
+        return new String[][] {leaderboard.getTopRanking(), player.getPastStats().toArray(new String[0])};
     }
 
     public Player getCurrentPlayer() { return player; }
