@@ -36,6 +36,7 @@ public class Game extends World
     private Tower pendingTower     = null;
 
     private Tower selectedTower = null;
+    private RangeCircle rangeCircle   = null;
 
     private List<Tower> towers = new ArrayList<>();
 
@@ -68,6 +69,7 @@ public class Game extends World
     public void act()
     {
         gui.refreshPanel(this);
+        updateRangeCircle();   
         // ESC cancels pending placement
         if (Greenfoot.isKeyDown("escape") && pendingTowerType != 0)
         {
@@ -403,10 +405,60 @@ public class Game extends World
             default: return new SplashTower();
         }
     }
+    
+    
 
     public boolean isPaused()            { return isPaused; }
     public boolean isShowHelp()          { return showHelp; }
     public Player  getPlayer()           { return player; }
     public Tower   getSelectedTower()    { return selectedTower; }
     public int     getPendingTowerType() { return pendingTowerType; }
+    
+    private void updateRangeCircle()
+{
+    int cx = -1, cy = -1, radius = -1;
+    boolean isPlacement = false;
+
+    if (pendingTowerType != 0)
+    {
+        MouseInfo mouse = Greenfoot.getMouseInfo();
+        if (mouse != null && mouse.getX() < MAP_W)
+        {
+            int col = mouse.getX() / CELL_SZ;
+            int row = mouse.getY() / CELL_SZ;
+            cx = col * CELL_SZ + CELL_SZ / 2;
+            cy = row * CELL_SZ + CELL_SZ / 2;
+            radius = createTower(pendingTowerType).getRange();
+            isPlacement = true;
+        }
+    }
+    else if (selectedTower != null)
+    {
+        cx = selectedTower.getX();
+        cy = selectedTower.getY();
+        radius = selectedTower.getRange();
+        isPlacement = false;
+    }
+
+    if (radius < 0)
+    {
+        if (rangeCircle != null) { removeObject(rangeCircle); rangeCircle = null; }
+        return;
+    }
+
+    // Recreate if missing, type changed, or radius changed
+    if (rangeCircle == null
+            || rangeCircle.isPlacement != isPlacement
+            || rangeCircle.radius != radius)
+    {
+        if (rangeCircle != null) removeObject(rangeCircle);
+        rangeCircle = new RangeCircle(radius, isPlacement);
+        addObject(rangeCircle, cx, cy);
+    }
+    else
+    {
+        rangeCircle.setLocation(cx, cy);
+    }
+}
+
 }   
