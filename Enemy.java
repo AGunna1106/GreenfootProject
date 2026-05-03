@@ -82,7 +82,7 @@ public class Enemy extends Actor
         if (currentPoint >= path.length) 
         {
             dealDamage();
-            return;   // must stop here — path array is exhausted
+            return;
         }
 
         int targetX = path[currentPoint][0];

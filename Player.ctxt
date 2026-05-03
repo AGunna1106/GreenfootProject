@@ -41,7 +41,6 @@ comment26.params=a\ b
 comment26.target=boolean\ isBetter(int[],\ int[])
 comment3.params=amount
 comment3.target=boolean\ adjustMedals(int)
-comment3.text=\r\n\ Positive\ amount\ adds\ medals;\ negative\ amount\ spends\ medals.\r\n\ Returns\ false\ (and\ makes\ no\ change)\ when\ spending\ would\ go\ below\ 0.\r\n
 comment4.params=amount
 comment4.target=void\ addMedals(int)
 comment5.params=amount

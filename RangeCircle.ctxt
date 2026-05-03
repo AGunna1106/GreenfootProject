@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=RangeCircle
+comment1.params=radius\ isPlacement
+comment1.target=RangeCircle(int,\ boolean)
+comment2.params=
+comment2.target=void\ act()
+numComments=3

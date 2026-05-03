@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Game extends World
 {
-    // Layout constants
     public static final int MAP_W   = 504;   // 12 cells x 42 px
     public static final int MAP_H   = 504;
     public static final int CELL_SZ = 42;
@@ -18,21 +17,21 @@ public class Game extends World
     private Map    map;
     private Player player;
     private Round  round;
-    private GUI    gui;   // reference only for restartGame() world-switch
+    private GUI    gui;
     private Difficulty difficulty;
 
     private int mapType = 0;
+    private int r;
 
     private boolean isPaused = false;
     private boolean showHelp = false;
 
-    // Wave / spawning state
     private boolean roundActive   = false;
     private int     spawnQueue    = 0;
     private int     spawnCooldown = 0;
-    private static final int SPAWN_INTERVAL = 60; // ~1 s at 60 fps
+    private static final int SPAWN_INTERVAL = 60;
 
-    private int   pendingTowerType = 0; // 0=none 1=Fast 2=Long 3=Splash
+    private int   pendingTowerType = 0;
     private Tower pendingTower     = null;
 
     private Tower selectedTower = null;
@@ -40,37 +39,30 @@ public class Game extends World
 
     private List<Tower> towers = new ArrayList<>();
 
-    // Constructor
     public Game(Player player, GUI gui, Difficulty difficulty)
     {
         super(WORLD_W, WORLD_H, 1);
         this.player = player;
         this.gui    = gui;
         this.round  = new Round();
-        this.map    = new Map(this);
+        this.map    = new Map();
         this.difficulty = difficulty;
     }
 
-    public Cell[][] setMap(int mapType)
+    public void setMap(int mapType)
     {
         this.mapType = mapType;
         Cell[][] cells = map.addCells(mapType);
-
         for (int row = 0; row < cells.length; row++)
             for (int col = 0; col < cells[row].length; col++)
-                addObject(cells[row][col],
-                          CELL_SZ * col + CELL_SZ / 2,
-                          CELL_SZ * row + CELL_SZ / 2);
-
+                addObject(cells[row][col], CELL_SZ * col + CELL_SZ / 2, CELL_SZ * row + CELL_SZ / 2);
         round.snapshotRoundStart(player, towers, CELL_SZ);
-        return cells;
     }
 
     public void act()
     {
         gui.refreshPanel(this);
         updateRangeCircle();   
-        // ESC cancels pending placement
         if (Greenfoot.isKeyDown("escape") && pendingTowerType != 0)
         {
             cancelPlacement();
@@ -79,7 +71,6 @@ public class Game extends World
             return;
         }
 
-        // Hover highlight during placement
         if (!isPaused && pendingTowerType != 0)
             updatePlacementHighlight();
 
@@ -110,9 +101,9 @@ public class Game extends World
     {
         if (isPaused) return;
         if (pendingTowerType != 0)
-            attemptPlacement(x, y);  // UC6
+            attemptPlacement(x, y);
         else
-            selectTowerAt(x, y);     // UC7
+            selectTowerAt(x, y);
     }
 
     private void updatePlacementHighlight()
@@ -179,13 +170,12 @@ public class Game extends World
             showText("", cx, yy);
     }
 
-    // ── Wave / Round Progression ─────────────────────────────────────
-    /** Called by the panel "Start Wave" button. */
+
     public void startWave()
     {
         if (roundActive) return;
-        int r = player.getRound();
-        spawnQueue    = 5 + (r - 1) * 2;   // 5, 7, 9, 11 …
+        r = player.getRound();
+        spawnQueue    = 5 + (r - 1) * 3;
         spawnCooldown = 0;
         roundActive   = true;
         showStatusMessage("Round " + r + " — " + spawnQueue + " enemies incoming!");
@@ -203,11 +193,10 @@ public class Game extends World
 
     private void spawnEnemy()
     {
-        int r   = player.getRound();
-        int hp  = 3  + (r - 1) * 2 + (difficulty.getMultiplier() * difficulty.getMultiplier());
+        int multiplier = difficulty.getMultiplier();
+        int hp  = 3  + (r - 1) * 4 + (multiplier * multiplier);
         int dmg = 1  + (r - 1);
-        int spd = 1   + Math.min((r - 1) / 3, 2) + (difficulty.getMultiplier() - 1); 
-        // 1→2→3, capped at 3
+        int spd = 1   + Math.min((r - 1) / 3, 2) + (multiplier - 1); 
         Enemy e = new Enemy(hp, dmg, spd, mapType, player);
         // Map 1 path starts at (100,400); Map 0 at (60,480)
         int[] start = (mapType == 0) ? new int[]{100, 400} : new int[]{60, 480};
@@ -221,9 +210,9 @@ public class Game extends World
         if (!getObjects(Enemy.class).isEmpty()) return;
 
         roundActive = false;
-        int bonus = 50 + player.getRound() * 10;
+        int bonus = 50 + r * 5;
         player.addMedals(bonus);
-        showStatusMessage("Round " + player.getRound() + " complete!  +" + bonus + " medal bonus");
+        showStatusMessage("Round " + r + " complete!  +" + bonus + " medal bonus");
         beginNewRound();
         gui.refreshPanel(this);
     }
@@ -340,7 +329,6 @@ public class Game extends World
         pendingTowerType = 0;
     }
 
-    // UC7: Tower selection and upgrade
     private void selectTowerAt(int x, int y)
     {
         for (Tower t : towers)
@@ -366,12 +354,15 @@ public class Game extends World
             return;
         }
         int cost = selectedTower.getNextUpgradeCost();
-        if (!player.canAfford(cost))
-        {
-            showStatusMessage("Need " + cost + " medals to upgrade!");
+        int playerMedals = player.getMedals();
+
+        if(selectedTower.doUpgrade(playerMedals)) {
+            player.spendMedals(playerMedals);
+            selectedTower.applyUpgradeStats();
+        } else {
+            showStatusMessage("Need " + (cost - playerMedals) + " medals to upgrade!");
             return;
         }
-        selectedTower.doUpgrade(player);
         showStatusMessage("Upgraded to level " + (selectedTower.getUpgradeLevel() + 1) + "!");
         gui.refreshPanel(this);
     }

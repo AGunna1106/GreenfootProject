@@ -10,14 +10,12 @@ public class GameController
     private Manager manager;
     private Game    game;
     private GUI     gui;
-    private Difficulty     difficulty = new Difficulty("EASY");
-    private Leaderboard leaderboard;
+    private Difficulty difficulty = new Difficulty("EASY");
 
     public GameController(GUI gui)
     {
         this.gui = gui;
         manager  = new Manager();
-        leaderboard = new Leaderboard();
     }
 
     /**
@@ -30,11 +28,14 @@ public class GameController
             return "Username cannot be empty.";
         if (password == null || password.trim().isEmpty())
             return "Password cannot be empty.";
+        if (username.contains(",") || username.contains(";") || username.contains("|") || password.contains(",") || password.contains(";") || password.contains("|"))
+            return "Cannot use symbols { , ; | }.";
 
         Player p = manager.getPlayer(username.trim(), password.trim());
         if (p == null) return "Incorrect password. Try again.";
 
         player = p;
+        manager.savePlayer(p);
         return "Login successful!";
     }
 
@@ -54,6 +55,7 @@ public class GameController
     
     public String[][] requestLeaderboard() {
         Player[] temp = manager.getAllPlayers();
+        Leaderboard leaderboard = new Leaderboard();
         leaderboard.setTopRanking(temp);
         return new String[][] {leaderboard.getTopRanking(), player.getPastStats().toArray(new String[0])};
     }
@@ -64,12 +66,11 @@ public class GameController
         player.addDifficulty(difficult);
         int end = player.endState();
         manager.savePlayer(player);
-    
         return end;
     }
     
-    public void updateDifficulty(Difficulty selection){
-        difficulty = selection;
+    public void updateDifficulty(String selection){
+        difficulty = new Difficulty(selection);
     }
 
     public Player getCurrentPlayer() { return player; }

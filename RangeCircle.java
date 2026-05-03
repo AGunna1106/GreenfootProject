@@ -16,7 +16,6 @@ public class RangeCircle extends Actor
         this.radius      = radius;
         this.isPlacement = isPlacement;
 
-        // Image is exactly diameter x diameter so Greenfoot centres it correctly
         int size = radius * 2;
         GreenfootImage img = new GreenfootImage(size, size);
 

@@ -43,6 +43,6 @@ public class Projectile extends Actor
     
     public void setSpeed(int newSpeed)
     {
-        this.speed = speed;
+        this.speed = newSpeed;
     }
 }
