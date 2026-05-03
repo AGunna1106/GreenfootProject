@@ -5,7 +5,6 @@ import greenfoot.*;
  */
 public class GUI extends World
 {
-    // Layout constants 
     public static final int MAP_W   = 546;
     public static final int PANEL_W = 156;
     public static final int WORLD_W = 660;
@@ -22,20 +21,17 @@ public class GUI extends World
     static final int BTN_HELP_Y         = 270;
     static final int BTN_RESTART_RND_Y  = 320;
     static final int BTN_RESTART_GAME_Y = 370;
-    static final int BTN_W = PANEL_W - 8;   // 148
+    static final int BTN_W = PANEL_W - 8;
     static final int BTN_H = 28;
 
-    // Login / menu state
     private boolean loginStarted    = false;
     private boolean loggedIn        = false;
     private boolean waitingToSwitch = false;
     private boolean choosingMap     = false;
     private int     delayCounter    = 0;
     private int     mapType         = 0;
-    private Difficulty selectedDifficulty = new Difficulty("MEDIUM"); //default
     private boolean choosingDifficulty = false;
     private GameController gameController;
-    
     
     private enum Screen {
         MENU,
@@ -45,7 +41,6 @@ public class GUI extends World
     
     private Screen currentScreen;
 
-    // Constructor
     public GUI()
     {
         super(WORLD_W, WORLD_H, 1);
@@ -272,24 +267,15 @@ public class GUI extends World
 
             if (x > half - 40 && x < half + 30)
             {
-                selectedDifficulty = new Difficulty("EASY");
-                gameController.updateDifficulty(selectedDifficulty);
-                showMessage("Difficulty: EASY");
-                choosingDifficulty = false;
+                chooseDiff("EASY");
             }
             else if (x > half + 30 && x < half + 110)
             {
-                selectedDifficulty = new Difficulty("MEDIUM");
-                gameController.updateDifficulty(selectedDifficulty);
-                showMessage("Difficulty: MEDIUM");
-                choosingDifficulty = false;
+                chooseDiff("MEDIUM");
             }
             else if (x > half + 110 && x < half + 180)
             {
-                selectedDifficulty = new Difficulty("HARD");
-                gameController.updateDifficulty(selectedDifficulty);
-                showMessage("Difficulty: HARD");
-                choosingDifficulty = false;
+                chooseDiff("HARD");
             
             }
         }
@@ -320,6 +306,12 @@ public class GUI extends World
         showText("", getWidth()/2, 350);
         showText("", getWidth()/2, 400);
         showText("", getWidth()/2, 470);
+    }
+    
+    public void chooseDiff(String diff) {
+        gameController.updateDifficulty(diff);
+        showMessage("Difficulty: " + diff);
+        choosingDifficulty = false;
     }
 
     public void prepareForReturn()
@@ -396,7 +388,6 @@ public class GUI extends World
             drawPausedPanel(bg, game);
         else
             drawNormalPanel(bg, game);
-        
         
         game.setBackground(bg);
     }

@@ -1,10 +1,5 @@
 import greenfoot.*;
 
-/**
- * Cell – a single tile on the map grid.
- * Tracks whether it is a valid tower placement zone,
- * whether it is an enemy path, and whether a tower occupies it.
- */
 public class Cell extends Actor
 {
     private boolean isValid;   // valid land cell (tower may be placed)
@@ -24,25 +19,14 @@ public class Cell extends Actor
         occupied = false;
     }
 
-    // ----------------------------------------------------------------
-    // Validity / path
-    // ----------------------------------------------------------------
-
     public boolean isValid()       { return isValid && !occupied; }
     public void setIsValid(boolean v) { isValid = v; }
     public boolean getIsPath()        { return isPath; }
     public void setIsPath(boolean p)  { isPath = p; }
 
-    // ----------------------------------------------------------------
-    // Occupancy
-    // ----------------------------------------------------------------
-
     public boolean isOccupied()          { return occupied; }
     public void setOccupied(boolean occ) { occupied = occ; }
 
-    /**
-     * Highlight this cell green (valid) or red (invalid) during placement.
-     */
     public void highlight(boolean valid)
     {
         GreenfootImage img = getImage();

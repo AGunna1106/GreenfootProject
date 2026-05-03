@@ -59,7 +59,6 @@ public class Manager
             return p;
         } else if (p == null) {
             p = new Player(un, pass);
-            savePlayer(p);
             return p;
         } else {
             return null; //Username found but wrong password

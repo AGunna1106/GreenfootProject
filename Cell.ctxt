@@ -1,6 +1,5 @@
 #BlueJ class context
 comment0.target=Cell
-comment0.text=\r\n\ Cell\ \u2013\ a\ single\ tile\ on\ the\ map\ grid.\r\n\ Tracks\ whether\ it\ is\ a\ valid\ tower\ placement\ zone,\r\n\ whether\ it\ is\ an\ enemy\ path,\ and\ whether\ a\ tower\ occupies\ it.\r\n
 comment1.params=color
 comment1.target=Cell(greenfoot.Color)
 comment2.params=
@@ -17,7 +16,6 @@ comment7.params=occ
 comment7.target=void\ setOccupied(boolean)
 comment8.params=valid
 comment8.target=void\ highlight(boolean)
-comment8.text=\r\n\ Highlight\ this\ cell\ green\ (valid)\ or\ red\ (invalid)\ during\ placement.\r\n
 comment9.params=
 comment9.target=void\ clearHighlight()
 numComments=10

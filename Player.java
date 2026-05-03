@@ -25,13 +25,8 @@ public class Player
         this.pastStats = new ArrayList<>();
     }
 
-    // Medals
     public int getMedals() { return medals; }
 
-    /**
-     * Positive amount adds medals; negative amount spends medals.
-     * Returns false (and makes no change) when spending would go below 0.
-     */
     public boolean adjustMedals(int amount)
     {
         if (amount < 0 && medals < -amount) return false;
@@ -39,7 +34,6 @@ public class Player
         return true;
     }
 
-    // Convenience wrappers kept for backward compatibility
     public void addMedals(int amount)      { adjustMedals(amount); }
     public boolean spendMedals(int amount) { return adjustMedals(-amount); }
     public boolean canAfford(int cost)     { return medals >= cost; }
@@ -111,7 +105,7 @@ public class Player
         return pastStats; 
     }
 
-    private int[] parseStats(String stat)
+    public static int[] parseStats(String stat)
     {
         // format: rounds;difficulty;health;medals
         String[] parts = stat.split("\\;");
@@ -125,14 +119,14 @@ public class Player
         return new int[]{rounds, difficulty, health, medals};
     }
 
-    private int difficultyValue(String d)
+    public static int difficultyValue(String d)
     {
         if (d.equals("HARD"))   return 3;
         if (d.equals("MEDIUM")) return 2;
         return 1; //Easy
     }
 
-    private boolean isBetter(int[] a, int[] b)
+    public static boolean isBetter(int[] a, int[] b)
     {
         if (a[0] != b[0]) return a[0] > b[0]; // rounds
         if (a[1] != b[1]) return a[1] > b[1]; // difficulty
