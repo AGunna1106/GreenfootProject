@@ -10,6 +10,13 @@ VERSION or DATE:
 
 Version 1
 
+AUTHORS:
+
+* Abhiram Gunna
+* Team member #1
+* Team member #2
+* Team member #3
+
 HOW TO START THIS PROJECT:
 
 1. Open Greenfoot.
@@ -18,19 +25,13 @@ HOW TO START THIS PROJECT:
 4. Click "Compile" to ensure all classes are up to date.
 5. Click "Run" to start the game.
 6. Log in with an existing username or create a new one.
-7. Begin gameplay by starting a new game and selecting a difficulty.
-
-AUTHORS:
-
-* Abhiram Gunna
-* Houlaymatou Diallo
-* Marvin Lam
-* Michael Barrett Nelson
+7. Begin gameplay by starting a new game and selecting a difficulty and map.
 
 USER INSTRUCTIONS:
 
 * Log in or create a new account to begin playing.
 * Select a difficulty level (Easy, Medium, Hard).
+* Select a map (1, 2).
 * Place towers on valid cells to defend against enemies.
 * Upgrade towers to improve their effectiveness.
 * Prevent enemies from reaching the end of the path to maintain health.
@@ -38,4 +39,3 @@ USER INSTRUCTIONS:
 * View your performance on the leaderboard after completing a game.
 * Use the pause feature to temporarily stop gameplay.
 * Use the help feature for instructions on how to play.
-
